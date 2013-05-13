@@ -23,7 +23,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 	ChatPanel chatpanel;		// 접속한 client와 채팅을 할 수 있는 패널
 	IDlistPanel idlistpanel;		// 접속중인 ID를 알려주는 패널
 	InformationPanel informationpanel;		// 정보 및 상태를 알려 주는 패널
-	GamePanel gamepanel;		// 게임을 진행하는 패널
+	GamePanel gamePanel;		// 게임을 진행하는 패널
 	LoginPanel loginPanel;		//로그인 페이지 보여주는 프레임
 	SignUp signUp;			//회원가입 페이지 보여주는 프레임
 	String state;			//창여러개 뜨는걸 방지하기위해....나중에 자세히 코딩
@@ -34,7 +34,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 	JButton join;
 	JButton itemShop;
 	JButton avatar;
-	JButton roomImfo;
+	JButton roomInfo;
 	JButton myInfo;
 	
 	
@@ -46,92 +46,110 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 //		this.setSize(new Dimension(WIDTH,HEIGHT));
 		this.setSize(WIDTH,HEIGHT);
 		
-		LoginRoom();
-		
-		//while(loginPanel.LoginCheck());
-		//WaitRoom();
-		
-		
-	}
-	public void LoginRoom(){
-		
-		loginPanel = new LoginPanel();
-		this.setLayout(null);
-		
-		loginPanel.setBounds(200,150,380,180);
-		this.add(loginPanel);
-		
-	}
-	
-	public void WaitRoom(){
-		
-		exit = new JButton("종료");	
+		// 대기방에 있는 기능성 버튼
 		roomMake = new JButton("방만들기");
 		join= new JButton("참여하기");
 		itemShop = new JButton("게임아이템");
 		avatar = new JButton("아바타샵");
-		roomImfo = new JButton("방정보");
+		roomInfo = new JButton("방정보");
 		myInfo = new JButton("내정보");
+		home = new JButton("뒤로");	
+		exit = new JButton("종료");	
 		
-		
-		
-		exit.addActionListener(this);
+		// 버튼 클릭할 때 실행되도록 리스너 추가
 		roomMake.addActionListener(this);
 		join.addActionListener(this);
 		itemShop.addActionListener(this);
 		avatar.addActionListener(this);
-		roomImfo.addActionListener(this);
+		roomInfo.addActionListener(this);
 		myInfo.addActionListener(this);
-
-		home = new JButton("뒤로");	
 		home.addActionListener(this);
-
+		exit.addActionListener(this);
+		
+		// 패널들 객체 생성
 		myInformation = new MyInformation();
 		roompanel = new RoomPanel();
 		chatpanel = new ChatPanel();
 		idlistpanel = new IDlistPanel();
 		informationpanel = new InformationPanel();	
-		gamepanel = new GamePanel();
+		loginPanel = new LoginPanel();
+		gamePanel = new GamePanel();
 
 		this.setLayout(null);
+		
+		exit.setBounds(850,620,95,30);
+		this.add(exit);
 
-		exit.setBounds(800,620,95,30);
-		roomMake.setBounds(100,20,95,30);
-		join.setBounds(200,20,95,30);
-		roomImfo.setBounds(300,20,95,30);
-		itemShop.setBounds(680,20,115,30);
-		avatar.setBounds(800,20,95,30);
-		myInfo.setBounds(580,20,95,30);
-
-		roompanel.setBounds(100, 70, 500, 280);
-//		home.setBounds(670,520,80,30);
-//		gamepanel.setBounds(100, 100, 500, 300);
-		chatpanel.setBounds(100, 350, 500, 250);	
-//		idlistpanel.setBounds(570, 20, 200, 270);	
-//		informationpanel.setBounds(520, 300, 250, 210);	
-//		this.add(roompanel);
-//		this.add(chatpanel);
-//		this.add(idlistpanel);
-//		this.add(informationpanel);
-
+		// 로그인 화면 뿌려주기
+		//EnterLoginRoom();
+		
+		// 로그인이 안되면 계속 while 함수 실행 
+		
+		//LoginRoomExit();
+		//EnterWaitRoom();
+		EnterGameRoom();
+		
 		Thread Catchmind;
 		Catchmind = new Thread(this);	// 스레드 생성
 		Catchmind.start();
-		this.add(exit);
 		
+	}
+	
+	public void EnterLoginRoom(){
+		loginPanel.setBounds(300,250,380,180);
+		this.add(loginPanel);
+	}
+	public void ExitLoginRoom(){
+		this.remove(loginPanel);
+	}
+	
+	public void EnterWaitRoom(){
+		roomMake.setBounds(50,20,95,30);
+		join.setBounds(150,20,95,30);
+		roomInfo.setBounds(250,20,95,30);
+		myInfo.setBounds(650,20,95,30);
+		avatar.setBounds(750,20,95,30);
+		itemShop.setBounds(850,20,115,30);
+		
+		roompanel.setBounds(50, 70, 500, 280);
+		chatpanel.setBounds(50, 400, 500, 230);	
+//		idlistpanel.setBounds(570, 20, 200, 270);	
+//		informationpanel.setBounds(520, 300, 250, 210);	
+//		this.add(idlistpanel);
+
 		this.add(roomMake);
 		this.add(join);
-		this.add(roomImfo);
+		this.add(roomInfo);
 		this.add(itemShop);
 		this.add(avatar);
 		this.add(myInfo);
-		
-		this.add(gamepanel);
 		this.add(chatpanel);
 		this.add(roompanel);
 		
 	}
+	public void ExitWaitRoom(){
+		this.remove(roomMake);
+		this.remove(join);
+		this.remove(roomInfo);
+		this.remove(itemShop);
+		this.remove(avatar);
+		this.remove(myInfo);
+		this.remove(roompanel);
+		this.remove(chatpanel);
+	}
+	
+	public void EnterGameRoom(){
+		gamePanel.setBounds(30, 20, 920, 400);
+		chatpanel.setBounds(30, 430, 500, 230);	
+		this.add(gamePanel);
+		this.add(chatpanel);
 
+	}
+	public void ExitGameRoom(){
+		this.remove(gamePanel);
+		this.remove(chatpanel);
+	}
+	
 
 //		SoundEffect.init();
 	@Override
@@ -152,7 +170,6 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 					myInformation.setNumId(line.substring(8));
 					myInformation.setGameId(line.substring(8));
 				}
-				
 				
 			}
 		} catch (IOException e) {  
@@ -182,7 +199,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 			ro.setResizable(false);
 			ro.setVisible(true);
 		}
-		else if(event.getSource()==roomImfo)
+		else if(event.getSource()==roomInfo)
 		{
 			JFrame roomImfoFrame= new JFrame();
 			roomImfoFrame.setBounds(300, 150, 400, 400);

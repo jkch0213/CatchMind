@@ -1,9 +1,7 @@
 package Client;
 
 
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
@@ -12,11 +10,14 @@ import java.io.BufferedReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import javax.swing.*;
+
+import javax.swing.border.*;
 /**
  * 
  * @author Administrator ???4??client
  */
-public class Test extends Frame implements MouseMotionListener {
+public class CanvasPanel extends JPanel implements MouseMotionListener {
 	private Socket socket;
 	private PrintWriter writer;
 	private BufferedReader reader;
@@ -27,35 +28,35 @@ public class Test extends Frame implements MouseMotionListener {
 	private int x = 0;
 	private int y = 0;
 
-	public Test(String title) {
+	public CanvasPanel(Socket socket) {
 		// TODO Auto-generated constructor stub
-		super(title);
+		this.setSize(new Dimension(500,350));
+		this.setBorder(new TitledBorder(new EtchedBorder(),"CatchMind"));
+
 		addMouseMotionListener(this);
+		/*
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
-		});
-		setBounds(100, 100, 500, 500);
+		});*/
+
+		setBounds(0, 0, 500, 350);
 		setVisible(true);
 
-		img = createImage(500, 500);
-		gImg = img.getGraphics();
+		img = createImage(500, 350);
+		//gImg = img.getGraphics();
 		repaint();
-
+		
 		try {
-			socket = new Socket("localhost", 10001);
 			writer = new PrintWriter(new OutputStreamWriter(
 					socket.getOutputStream()));
 
 		} catch (Exception e) {
+			
 		}
 	}
 	
-	public static void main(String[] args) {
-		new Test("Client");
-	}
-
 	public void paint(Graphics g) {
 		g.drawImage(img, 0, 0, this);
 	}

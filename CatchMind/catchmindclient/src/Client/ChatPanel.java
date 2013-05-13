@@ -14,8 +14,8 @@ import javax.swing.border.TitledBorder;
 public class ChatPanel extends JPanel implements ActionListener
 {
 
-	private int WIDTH = 750;
-	private int HEIGHT = 250;
+	private int WIDTH = 700;
+	private int HEIGHT = 500;
 	
 	public TextArea chatarea;
 	private TextField inputmsg;
@@ -34,8 +34,8 @@ public class ChatPanel extends JPanel implements ActionListener
 
 		this.setLayout(null);
 
-		chatarea.setBounds(10, 20, 480, 200);
-		inputmsg.setBounds(10, 220, 480, 20);
+		chatarea.setBounds(10, 20, 480, 180);
+		inputmsg.setBounds(10, 200, 480, 20);
 
 		this.add(chatarea);
 		this.add(inputmsg);	

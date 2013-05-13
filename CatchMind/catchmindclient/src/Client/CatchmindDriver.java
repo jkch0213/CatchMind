@@ -23,7 +23,7 @@ public class CatchmindDriver
 	{
 		// TODO Auto-generated method stub
 		serverip= "localhost";			//서버의 주소
-		port = 5555;					//통신할 포트 번호		
+		port = 9999;					//통신할 포트 번호		
 
 		try {
 			socket = new Socket(CatchmindDriver.getServerIp(), CatchmindDriver.getPort());

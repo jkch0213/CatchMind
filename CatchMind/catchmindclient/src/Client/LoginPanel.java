@@ -30,7 +30,6 @@ public class LoginPanel extends JPanel {
 		this.setLayout(null);
 		
 		signUp = new SignUp();
-
 		IDLabel = new JLabel("ID",10);
 		PasswordLabel = new JLabel("Password",10);
 		IDText = new TextField(20);
@@ -65,10 +64,6 @@ public class LoginPanel extends JPanel {
 		Login.addActionListener(BL);
 	}
 	
-	public boolean LoginCheck(){
-		return LoginCheck;
-	}
-	
 	public class ButtonListener implements ActionListener{
 
 		@Override
@@ -81,18 +76,27 @@ public class LoginPanel extends JPanel {
 			}else if(event == Login){
 				String ID = IDText.getText().trim();
 				String PW = PasswordText.getText().trim();
+				//아이디 입력 텍스트에 빈칸인지 확인하고 빈칸이면 메시지 출력
 				if(ID.length() == 0 || ID == null ){
 					JOptionPane.showMessageDialog(Login, "아이디를 입력하세요",
 							"ID Error", JOptionPane.ERROR_MESSAGE);
+				// 비밀번호 텍스트가 빈칸인지 확인하고 빈칸이면 메시지 출력
 				}else if(PW.length() == 0 || PW == null){
 					JOptionPane.showMessageDialog(Login, "비밀번호를 입력하세요",
 							"Password Error", JOptionPane.ERROR_MESSAGE);
-				}
+				}else{
 				// DB로 ID,Password 확인하는 작업
 				// DB가 완성될때까지 임시로 아무값만 넣으면 로그인
 				LoginCheck =true;
+				}
 			}
 		}
+	}
+
+	protected boolean IsLogin() {
+		// TODO Auto-generated method stub
+		if(LoginCheck == true)	return true;
+		else return false;
 	}
 
 }
