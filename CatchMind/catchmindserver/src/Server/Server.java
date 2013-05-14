@@ -6,7 +6,7 @@ public class Server
 	protected ClientController clientcontroller;
 	protected RoomController roomcontroller;
 	
-	public static int inPort=9999;
+	public static int inPort=5555;
 	public static ServerSocket server = null;
 	private int count;
 	

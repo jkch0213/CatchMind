@@ -14,7 +14,7 @@ public class Room
 
 	private int count;			// 턴을 위해 계속 count
 
-	public Room(Client player, String number, String title, String max, String map)
+	public Room(Client player, String number, String title, String max)
 	{
 		playerlist = new Vector<Client>();
 		playerlist.add(player);		//방에 입장한 client를 list에 추가한다.
@@ -33,6 +33,10 @@ public class Room
 		return number;
 	}
 
+	public String getString() 
+	{
+		return number + "\t" + title + "\t" + condition ;
+	}
 	public void updateCondition()
 	{
 		if (playerlist.size() == Integer.parseInt(max)) this.condition = "Full";	// 방에 입장한 수가 max값과 같으면 Full로 나타냄
@@ -54,13 +58,39 @@ public class Room
 
 		for(int i=0;i<playerlist.size();i++)
 		{
-			result += playerlist.get(i).getID()+ " / " +playerlist.get(i).team +"팀 / "+playerlist.get(i).state+"\n";
+//			result += playerlist.get(i).getID()+ " / " +playerlist.get(i).team +"팀 / "+playerlist.get(i).state+"\n";
 		}
 		return result;
 	}
 	
+	public String getRoomNum()
+	{
+		String result =number ;
+		return result;
+	}
+	public String getRoomTitle()
+	{
+		String result =title ;
+		
+		
+		return result;
+	}
+	public String getRoomPeopleCount()
+	{
+		String result = "";
+		result+=max+"  /"+playerlist.size()+"명 입장";
+		return result;
+	}
 
-
+    public String getRoomIdList()
+    {
+    	String result ="";
+    	for(int i=0;i<playerlist.size();i++)
+		{
+			result += playerlist.get(i).getGameId()+ "/";
+		}
+    	return result;
+    }
 
 
 	public String nextTurn()		// 다음 턴의 player ID를 반환

@@ -1,42 +1,46 @@
 package Client;
 
-
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.JOptionPane;
+import java.io.IOException;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class LoginPanel extends JPanel implements ActionListener{
+public class LoginPanel extends JPanel implements ActionListener {
 	SignUpFrame signUp;
-	
+
 	private int WIDTH = 380;
 	private int HEIGHT = 180;
-	private boolean LoginCheck=false; //ë¡œê·¸ì¸ë˜ì–´ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” ë³€ìˆ˜
-	public TextField IDText;
-	public TextField PasswordText;
+	private boolean LoginCheck = false; // ·Î±×ÀÎµÇ¾îÀÖ´ÂÁö È®ÀÎÇÏ´Â º¯¼ö
+
 	JLabel IDLabel;
 	JLabel PasswordLabel;
 	JButton ForgotID;
 	JButton ForgotPS;
+	TextField IDText;
+	TextField PasswordText;
 	JButton Login;
 	JButton SignUp;
-	
-	public LoginPanel(){
-		this.setBorder(new TitledBorder(new EtchedBorder(),"Login"));
-		this.setSize(new Dimension(WIDTH,HEIGHT));
+	JButton exit;
+
+	public LoginPanel() {
+		this.setBorder(new TitledBorder(new EtchedBorder(), "Login"));
+		this.setSize(new Dimension(WIDTH, HEIGHT));
 		this.setLayout(null);
-		
+
 		signUp = new SignUpFrame();
-		IDLabel = new JLabel("ID",10);
-		PasswordLabel = new JLabel("Password",10);
+
+		IDLabel = new JLabel("ID", 10);
+		PasswordLabel = new JLabel("Password", 10);
 		IDText = new TextField(20);
 		PasswordText = new TextField(20);
 		Login = new JButton("Login");
-		ForgotID = new JButton("ID ì°¾ê¸°");
-		ForgotPS = new JButton("ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°");
+		ForgotID = new JButton("ID Ã£±â");
+		ForgotPS = new JButton("ºñ¹Ğ¹øÈ£ Ã£±â");
 		SignUp = new JButton("SignUp");
-		
+		exit = new JButton("Exit");
+
 		IDLabel.setBounds(50, 45, 70, 30);
 		IDText.setBounds(140, 50, 100, 20);
 		PasswordLabel.setBounds(50, 75, 70, 30);
@@ -45,8 +49,8 @@ public class LoginPanel extends JPanel implements ActionListener{
 		ForgotID.setBounds( 40, 120, 80, 20);
 		ForgotPS.setBounds(130, 120, 120, 20);
 		SignUp.setBounds(270, 120, 80, 20);
-		
-		// íŒ¨ë„ì— ì»´í¬ë„ŒíŠ¸ë“¤ ì¶”ê°€í•˜ê¸°
+		exit.setBounds(270, 150, 80, 20);
+
 		this.add(IDLabel);
 		this.add(PasswordLabel);
 		this.add(ForgotID);
@@ -55,55 +59,68 @@ public class LoginPanel extends JPanel implements ActionListener{
 		this.add(PasswordText);
 		this.add(Login);
 		this.add(SignUp);
-		
-		
-		//ActionListener ìƒì„±
-		SignUp.addActionListener(this);	
+		this.add(exit);
+		SignUp.setVisible(true);
+
+		// ActionListener »ı¼º
+		SignUp.addActionListener(this);
 		Login.addActionListener(this);
+		exit.addActionListener(this);
 		ForgotID.addActionListener(this);
 		ForgotPS.addActionListener(this);
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			Component event = (Component)e.getSource();
-			
-			// íšŒì›ê°€ì…ì„ í´ë¦­í–ˆì„ ë•Œ
-			if(event == SignUp){
-				signUp.setVisible(true);
-			
-			// ì•„ì´ë”” ì°¾ê¸°ë¥¼ í´ë¦­ í–ˆì„ ë•Œ
-			}else if(event == ForgotID ){
-				DB_Controller.Login.FindID();
-			// ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°ë¥¼ í´ë¦­ í–ˆì„ ë•Œ
-			}else if(event == ForgotPS ){
-				DB_Controller.Login.FindPassword();
-				
-				
-			}else if(event == Login){
-				String ID = IDText.getText().trim();
-				String PW = PasswordText.getText().trim();
-				//ì•„ì´ë”” ì…ë ¥ í…ìŠ¤íŠ¸ì— ë¹ˆì¹¸ì¸ì§€ í™•ì¸í•˜ê³  ë¹ˆì¹¸ì´ë©´ ë©”ì‹œì§€ ì¶œë ¥
-				if(ID.length() == 0 || ID == null ){
-					JOptionPane.showMessageDialog(Login, "ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì„¸ìš”",
-							"ID Error", JOptionPane.ERROR_MESSAGE);
-				// ë¹„ë°€ë²ˆí˜¸ í…ìŠ¤íŠ¸ê°€ ë¹ˆì¹¸ì¸ì§€ í™•ì¸í•˜ê³  ë¹ˆì¹¸ì´ë©´ ë©”ì‹œì§€ ì¶œë ¥
-				}else if(PW.length() == 0 || PW == null){
-					JOptionPane.showMessageDialog(Login, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”",
-							"Password Error", JOptionPane.ERROR_MESSAGE);
-				}else{
-				// DBë¡œ ID,Password í™•ì¸í•˜ëŠ” ì‘ì—…
-				// DBê°€ ì™„ì„±ë ë•Œê¹Œì§€ ì„ì‹œë¡œ ì•„ë¬´ê°’ë§Œ ë„£ìœ¼ë©´ ë¡œê·¸ì¸
-					
-				LoginCheck =true;
+
+		// TODO Auto-generated method stub
+		Component event = (Component) e.getSource();
+
+		if (event == SignUp) {
+			signUp.setVisible(true);
+			// ¾ÆÀÌµğ Ã£±â¸¦ Å¬¸¯ ÇßÀ» ¶§
+		} else if (event == ForgotID) {
+			DB_Controller.Login.FindID();
+			// ºñ¹Ğ¹øÈ£ Ã£±â¸¦ Å¬¸¯ ÇßÀ» ¶§
+		} else if (event == ForgotPS) {
+			DB_Controller.Login.FindPassword();
+
+		} else if (event == Login) {
+			String ID = IDText.getText().trim();
+			String PW = PasswordText.getText().trim();
+			if (ID.length() == 0 || ID == null) {
+				JOptionPane.showMessageDialog(Login, "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ¼¼¿ä", "ID Error",
+						JOptionPane.ERROR_MESSAGE);
+			} else if (PW.length() == 0 || PW == null) {
+				JOptionPane.showMessageDialog(Login, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä",
+						"Password Error", JOptionPane.ERROR_MESSAGE);
+			} else {
+
+				try {
+					CatchmindDriver.getDos().writeUTF("[login] " + ID);
+
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
-	}
 
-	protected boolean IsLogin() {
-		// TODO Auto-generated method stub
-		if(LoginCheck == true)	return true;
-		else return false;
+			// DB·Î ID,Password È®ÀÎÇÏ´Â ÀÛ¾÷
+			// DB°¡ ¿Ï¼ºµÉ¶§±îÁö ÀÓ½Ã·Î ¾Æ¹«°ª¸¸ ³ÖÀ¸¸é ·Î±×ÀÎ
+
+		}
+
+		if (event == exit) {
+
+			try {
+				CatchmindDriver.exit(); // ¼­¹ö¿Í Á¢¼ÓÀ» ÇØÁöÇÔ : ¸ŞÀÎÇÔ¼öÀÇ socket, dis, dos¸¦
+										// close
+			} catch (IOException ea) {
+				ea.printStackTrace();
+			}
+			CatchmindDriver.getFrame().setVisible(false); // Á¾·á ¹öÆ°À» ´©¸£¸é ÇÁ·¹ÀÓÀ» ´İÀ½
+			// SoundEffect.BGM.stop(); // ¹è°æÀ½¾ÇÀ» ²û
+
+		}
 	}
 
 }

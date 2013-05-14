@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -116,11 +117,42 @@ public class RoomMakeFrame extends JFrame implements  ActionListener
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// TODO Auto-generated method stub
+		if(event.getSource() == selectNum)
+		{  
+			num = (String)nummodel.getElementAt(selectNum.getSelectedIndex());	//인원 수 콤보박스 모델의 String을 num 저장
+			System.out.println("방인원:"+num);
+		}
 		if(event.getSource() == exit)
 		{
 			
 			this.setVisible(false);
 					// 배경음악을 끔
+		}
+		else if(event.getSource() == enter){
+			if(Titletext.getText().equals(""))
+			{
+				JOptionPane.showMessageDialog(enter, "방제목을 입력하세요",
+						"ID Error", JOptionPane.ERROR_MESSAGE);
+			}
+			else
+			{
+				
+				msg= "[MakeRoom] "+ Titletext.getText() + "\t" +num ;
+				System.out.println("방인원:"+num);
+				try {
+					CatchmindDriver.getDos().writeUTF(msg);
+					setVisible(false);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				Titletext.setText("");
+							
+			}
+			
+			
+			
+		
+			
 		}
 		
 		

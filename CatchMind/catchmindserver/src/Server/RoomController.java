@@ -56,7 +56,26 @@ public class RoomController
 	}
 
 
-	
+	public String makeRoom(Client player, String msg)
+	{
+		String result;
+		
+		tokenizer = new StringTokenizer(msg.substring(11),"\t"); 		// [Make Room] 를 제외한 메시지를 \t를 기준으로 나눔
+		int i=0;
+
+		while(tokenizer.hasMoreTokens())
+		{
+			tokens[i++] = tokenizer.nextToken();
+		}
+		roomnum++;
+		roomlist.add(new Room(player, roomnum+"",tokens[0],tokens[1]));
+		player.setRoomnum(roomnum);		//Clinet의 방번호를 변경한다.
+		
+
+		result = roomlist.get(roomlist.size()-1).toString();
+		
+		return result;
+	}
 	
 
 	public String nextTurn(int roomnum)
@@ -69,6 +88,44 @@ public class RoomController
 	{
 		int i = indexRoom(roomnum);
 		return roomlist.get(i).getPlayerIDlist();	// 해당 방의 정보와 모든 playerlist의 상태를 반환
+	}
+	public String getRoomNum(int roomnum)
+	{
+		int i = indexRoom(roomnum);
+		return roomlist.get(i).getRoomNum();
+
+	}
+	public String getRoomTitle(int roomnum)
+	{
+		int i = indexRoom(roomnum);
+		return roomlist.get(i).getRoomTitle();
+	}
+	
+	public String getRoomPeopleCount(int roomnum)
+	{
+		int i = indexRoom(roomnum);
+		return roomlist.get(i).getRoomPeopleCount();
+	}
+	
+	public String getRoomIdList(int roomnum)
+	{
+		int i = indexRoom(roomnum);
+		return roomlist.get(i).getRoomIdList();
+	}
+	
+	public int RoomSize()
+	{
+		return roomlist.size()-1;
+	}
+	public String totalRoom()
+	{
+		// 만들어진 모든 방의 정보를 반환한다.
+		String result = "";
+		for(int i=0;i<roomlist.size();i++)
+		{
+			result += roomlist.get(i).getString()+"\n";
+		}
+		return result;
 	}
 	
 	
