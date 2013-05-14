@@ -1,6 +1,5 @@
 package Client;
 
-
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -10,14 +9,13 @@ import java.io.BufferedReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import javax.swing.*;
 
 import javax.swing.border.*;
 /**
  * 
- * @author Administrator ???4??client
+ * @author Administrator ���4��client
  */
-public class CanvasPanel extends JPanel implements MouseMotionListener {
+public class CanvasPanel extends Frame implements MouseMotionListener {
 	private Socket socket;
 	private PrintWriter writer;
 	private BufferedReader reader;
@@ -28,27 +26,26 @@ public class CanvasPanel extends JPanel implements MouseMotionListener {
 	private int x = 0;
 	private int y = 0;
 
-	public CanvasPanel(Socket socket) {
+	public CanvasPanel() {
 		// TODO Auto-generated constructor stub
-		this.setSize(new Dimension(500,350));
-		this.setBorder(new TitledBorder(new EtchedBorder(),"CatchMind"));
-
+		
+		this.setSize(new Dimension(WIDTH,HEIGHT));
+		
 		addMouseMotionListener(this);
-		/*
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
-		});*/
-
+		});
 		setBounds(0, 0, 500, 350);
 		setVisible(true);
 
 		img = createImage(500, 350);
-		//gImg = img.getGraphics();
+		gImg = img.getGraphics();
 		repaint();
-		
+
 		try {
+			socket = CatchmindDriver.getSocket();
 			writer = new PrintWriter(new OutputStreamWriter(
 					socket.getOutputStream()));
 
@@ -56,7 +53,7 @@ public class CanvasPanel extends JPanel implements MouseMotionListener {
 			
 		}
 	}
-	
+
 	public void paint(Graphics g) {
 		g.drawImage(img, 0, 0, this);
 	}

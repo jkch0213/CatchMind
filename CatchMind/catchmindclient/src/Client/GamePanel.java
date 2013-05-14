@@ -26,8 +26,8 @@ public class GamePanel extends JPanel implements ActionListener
 		this.setSize(new Dimension(WIDTH,HEIGHT));
 		this.setBorder(new TitledBorder(new EtchedBorder(),"CatchMind"));
 		
-		canvasPanel = new CanvasPanel(CatchmindDriver.getSocket());
-		canvasPanel.setBounds(200, 20, 500, 350);
+//		canvasPanel = new CanvasPanel();
+//		canvasPanel.setBounds(200, 20, 500, 350);
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {

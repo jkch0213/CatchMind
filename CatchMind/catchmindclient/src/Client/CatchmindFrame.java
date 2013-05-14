@@ -25,7 +25,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 	InformationPanel informationpanel;		// 정보 및 상태를 알려 주는 패널
 	GamePanel gamePanel;		// 게임을 진행하는 패널
 	LoginPanel loginPanel;		//로그인 페이지 보여주는 프레임
-	SignUp signUp;			//회원가입 페이지 보여주는 프레임
+	SignUpFrame signUp;			//회원가입 페이지 보여주는 프레임
 	String state;			//창여러개 뜨는걸 방지하기위해....나중에 자세히 코딩
 
 	JButton home;
@@ -43,7 +43,6 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);		// 우측 상단 X버튼을 눌러도 프레임이 닫히지 않음
 
 		this.setTitle("Catchmind Game");
-//		this.setSize(new Dimension(WIDTH,HEIGHT));
 		this.setSize(WIDTH,HEIGHT);
 		
 		// 대기방에 있는 기능성 버튼
@@ -81,13 +80,11 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		this.add(exit);
 
 		// 로그인 화면 뿌려주기
-		//EnterLoginRoom();
-		
-		// 로그인이 안되면 계속 while 함수 실행 
+		EnterLoginRoom();
 		
 		//LoginRoomExit();
 		//EnterWaitRoom();
-		EnterGameRoom();
+		//EnterGameRoom();
 		
 		Thread Catchmind;
 		Catchmind = new Thread(this);	// 스레드 생성
@@ -175,8 +172,6 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		} catch (IOException e) {  
 			System.out.println("서버와 연결이 끊어졌습니다.");
 		}
-	
-		
 	}
 
 	@Override

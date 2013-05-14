@@ -7,20 +7,18 @@ import javax.swing.JOptionPane;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class LoginPanel extends JPanel {
-	SignUp signUp;
-	ButtonListener BL;
+public class LoginPanel extends JPanel implements ActionListener{
+	SignUpFrame signUp;
 	
 	private int WIDTH = 380;
 	private int HEIGHT = 180;
-	private boolean LoginCheck=false; //·Î±×ÀÎµÇ¾îÀÖ´ÂÁö È®ÀÎÇÏ´Â º¯¼ö
-	
+	private boolean LoginCheck=false; //ë¡œê·¸ì¸ë˜ì–´ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” ë³€ìˆ˜
+	public TextField IDText;
+	public TextField PasswordText;
 	JLabel IDLabel;
 	JLabel PasswordLabel;
-	JLabel ForgotID;
-	JLabel ForgotPS;
-	TextField IDText;
-	TextField PasswordText;
+	JButton ForgotID;
+	JButton ForgotPS;
 	JButton Login;
 	JButton SignUp;
 	
@@ -29,25 +27,26 @@ public class LoginPanel extends JPanel {
 		this.setSize(new Dimension(WIDTH,HEIGHT));
 		this.setLayout(null);
 		
-		signUp = new SignUp();
+		signUp = new SignUpFrame();
 		IDLabel = new JLabel("ID",10);
 		PasswordLabel = new JLabel("Password",10);
 		IDText = new TextField(20);
 		PasswordText = new TextField(20);
 		Login = new JButton("Login");
-		ForgotID = new JLabel("Forgot ID");
-		ForgotPS = new JLabel("ForgotPassword");
+		ForgotID = new JButton("ID ì°¾ê¸°");
+		ForgotPS = new JButton("ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°");
 		SignUp = new JButton("SignUp");
 		
 		IDLabel.setBounds(50, 45, 70, 30);
 		IDText.setBounds(140, 50, 100, 20);
 		PasswordLabel.setBounds(50, 75, 70, 30);
 		PasswordText.setBounds(140, 80, 100, 20);
-		Login.setBounds(250, 80, 80, 20);
-		ForgotID.setBounds( 50, 115, 100, 30);
-		ForgotPS.setBounds(140, 115, 100, 30);
-		SignUp.setBounds(250, 120, 80, 20);
+		Login.setBounds(270, 80, 80, 20);
+		ForgotID.setBounds( 40, 120, 80, 20);
+		ForgotPS.setBounds(130, 120, 120, 20);
+		SignUp.setBounds(270, 120, 80, 20);
 		
+		// íŒ¨ë„ì— ì»´í¬ë„ŒíŠ¸ë“¤ ì¶”ê°€í•˜ê¸°
 		this.add(IDLabel);
 		this.add(PasswordLabel);
 		this.add(ForgotID);
@@ -56,41 +55,49 @@ public class LoginPanel extends JPanel {
 		this.add(PasswordText);
 		this.add(Login);
 		this.add(SignUp);
-		SignUp.setVisible(true);
 		
-		BL = new ButtonListener();
-		//ActionListener »ı¼º
-		SignUp.addActionListener(BL);	
-		Login.addActionListener(BL);
+		
+		//ActionListener ìƒì„±
+		SignUp.addActionListener(this);	
+		Login.addActionListener(this);
+		ForgotID.addActionListener(this);
+		ForgotPS.addActionListener(this);
 	}
 	
-	public class ButtonListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			Component event = (Component)e.getSource();
 			
+			// íšŒì›ê°€ì…ì„ í´ë¦­í–ˆì„ ë•Œ
 			if(event == SignUp){
 				signUp.setVisible(true);
+			
+			// ì•„ì´ë”” ì°¾ê¸°ë¥¼ í´ë¦­ í–ˆì„ ë•Œ
+			}else if(event == ForgotID ){
+				DB_Controller.Login.FindID();
+			// ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°ë¥¼ í´ë¦­ í–ˆì„ ë•Œ
+			}else if(event == ForgotPS ){
+				DB_Controller.Login.FindPassword();
+				
+				
 			}else if(event == Login){
 				String ID = IDText.getText().trim();
 				String PW = PasswordText.getText().trim();
-				//¾ÆÀÌµğ ÀÔ·Â ÅØ½ºÆ®¿¡ ºóÄ­ÀÎÁö È®ÀÎÇÏ°í ºóÄ­ÀÌ¸é ¸Ş½ÃÁö Ãâ·Â
+				//ì•„ì´ë”” ì…ë ¥ í…ìŠ¤íŠ¸ì— ë¹ˆì¹¸ì¸ì§€ í™•ì¸í•˜ê³  ë¹ˆì¹¸ì´ë©´ ë©”ì‹œì§€ ì¶œë ¥
 				if(ID.length() == 0 || ID == null ){
-					JOptionPane.showMessageDialog(Login, "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ¼¼¿ä",
+					JOptionPane.showMessageDialog(Login, "ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì„¸ìš”",
 							"ID Error", JOptionPane.ERROR_MESSAGE);
-				// ºñ¹Ğ¹øÈ£ ÅØ½ºÆ®°¡ ºóÄ­ÀÎÁö È®ÀÎÇÏ°í ºóÄ­ÀÌ¸é ¸Ş½ÃÁö Ãâ·Â
+				// ë¹„ë°€ë²ˆí˜¸ í…ìŠ¤íŠ¸ê°€ ë¹ˆì¹¸ì¸ì§€ í™•ì¸í•˜ê³  ë¹ˆì¹¸ì´ë©´ ë©”ì‹œì§€ ì¶œë ¥
 				}else if(PW.length() == 0 || PW == null){
-					JOptionPane.showMessageDialog(Login, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä",
+					JOptionPane.showMessageDialog(Login, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”",
 							"Password Error", JOptionPane.ERROR_MESSAGE);
 				}else{
-				// DB·Î ID,Password È®ÀÎÇÏ´Â ÀÛ¾÷
-				// DB°¡ ¿Ï¼ºµÉ¶§±îÁö ÀÓ½Ã·Î ¾Æ¹«°ª¸¸ ³ÖÀ¸¸é ·Î±×ÀÎ
+				// DBë¡œ ID,Password í™•ì¸í•˜ëŠ” ì‘ì—…
+				// DBê°€ ì™„ì„±ë ë•Œê¹Œì§€ ì„ì‹œë¡œ ì•„ë¬´ê°’ë§Œ ë„£ìœ¼ë©´ ë¡œê·¸ì¸
+					
 				LoginCheck =true;
 				}
 			}
-		}
 	}
 
 	protected boolean IsLogin() {
