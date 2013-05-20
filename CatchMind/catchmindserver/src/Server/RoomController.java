@@ -93,7 +93,6 @@ public class RoomController
 	{
 		int i = indexRoom(roomnum);
 		return roomlist.get(i).getRoomNum();
-
 	}
 	public String getRoomTitle(int roomnum)
 	{

@@ -13,6 +13,10 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import Login.LoginPanel;
+import Login.SignUpFrame;
+
+
 
 public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 {
@@ -37,7 +41,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 	LoginPanel loginPanel;		//로그인 페이지 보여주는 프레임
 	SignUpFrame signUp;			//회원가입 페이지 보여주는 프레임
 	String state;			//창여러개 뜨는걸 방지하기위해....나중에 자세히 코딩
-
+	
 	JButton home;
 	JButton exit;
 	JButton roomMake;
@@ -59,7 +63,6 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);		// 우측 상단 X버튼을 눌러도 프레임이 닫히지 않음
 
 		this.setTitle("Catchmind Game");
-//		this.setSize(new Dimension(WIDTH,HEIGHT));
 		this.setSize(WIDTH,HEIGHT);
 
 		LoginRoom();
@@ -67,10 +70,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		Thread Catchmind;
 		Catchmind = new Thread(this);	// 스레드 생성
 		Catchmind.start();
-		//while(loginPanel.LoginCheck());
-		//WaitRoom();
-		
-		
+
 	}
 	public void LoginRoom(){
 		
@@ -81,12 +81,11 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		this.add(loginPanel);
 		
 	}
-	private void removeLoginPalnel() {
+	private void removeLoginPanel() {
 		// TODO Auto-generated method stub
 		this.remove(loginPanel);
 		this.repaint();
 	}
-	
 	
 	public void WaitRoom(){
 		
@@ -97,8 +96,6 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		avatar = new JButton("아바타샵");
 		roomInfo = new JButton("방정보");
 		myInfo = new JButton("내정보");
-		
-		
 		
 		exit.addActionListener(this);
 		roomMake.addActionListener(this);
@@ -144,7 +141,6 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 
 		
 	    this.add(exit);
-		
 		this.add(roomMake);
 		this.add(join);
 		this.add(roomInfo);
@@ -166,42 +162,41 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		this.remove(itemShop);
 		this.remove(avatar);
 		this.remove(myInfo);
-		
 		this.remove(gamepanel);
-		
 		this.remove(roompanel);
 	}
 
-	 public String getTitle() {
-			return title;
-		}
+	public String getTitle() {
+		return title;
+	}
 
-		public void setRoomTitle(String title) {
-			this.title = title;
-		}
+	public void setRoomTitle(String title) {
+		this.title = title;
+	}
 
-		public String getPeopleCount() {
-			return peopleCount;
-		}
+	public String getPeopleCount() {
+		return peopleCount;
+	}
 
-		public void setPeopleCount(String peopleCount) {
-			this.peopleCount = peopleCount;
-		}
+	public void setPeopleCount(String peopleCount) {
+		this.peopleCount = peopleCount;
+	}
 
-		public String getIdList() {
-			return idList;
-		}
+	public String getIdList() {
+		return idList;
+	}
 
-		public void setIdList(String idList) {
-			this.idList = idList;
-		}
-		public void setRoomNum(String roomNum){
-			this.roomNum = roomNum;
-		}
-		public String getRoomNum(){
-			return roomNum;
-		}
-		
+	public void setIdList(String idList) {
+		this.idList = idList;
+	}
+
+	public void setRoomNum(String roomNum) {
+		this.roomNum = roomNum;
+	}
+
+	public String getRoomNum() {
+		return roomNum;
+	}
 	
 //		SoundEffect.init();
 	@Override
@@ -227,7 +222,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 				else if(line.startsWith("[login]"))
 				{
 					System.out.println(line);
-					removeLoginPalnel();
+					removeLoginPanel();
 					WaitRoom();
 					repaint();
 					
@@ -391,9 +386,6 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 				roomInfoframe.setBounds(300, 150, 400, 500);
 				roomInfoframe.setVisible(true);
 				
-				
-				
-				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -435,7 +427,6 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 			info.setVisible(true);
 			
 		}
-		
 
 	}
 	public static RoomInformationFrame getRoomInfoframe() {

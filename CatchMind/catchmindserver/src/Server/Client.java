@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 import javax.print.attribute.standard.Severity;
+import DBController.LoginController;
 
 class Client extends Thread 
 {
@@ -15,10 +16,13 @@ class Client extends Thread
 	private String id;				// client id는 "user1,user2,...(접속순서)" 이다.
 	private int roomnum;			// 방번호를 나타내는 변수 초기값 -1(대기실)
 	private String gameId;
-
+	/* 2013.05.17 Modified */
+	protected String pass;
+	protected String name;
+	protected String reginum;
+	/* 2013.05.17 Modified */
+	
 	String state;					// 준비중인지 현재 상태를 나타냄
-	
-	
 	
 	public Client(Server svr, Socket s) throws IOException
 	{
@@ -32,7 +36,6 @@ class Client extends Thread
 		roomnum = -1;
 
 		state = "";		// 게임 시작을 준비하지 않은 상태
-		
 		
 		try {
 			dos.writeUTF("[ShowID]"+ id);	//접속한 client에게 ID를 전송
@@ -96,8 +99,29 @@ class Client extends Thread
 					sendToMe(msg);
 					dos.writeUTF("[Roomlist]"+ svr.roomcontroller.totalRoom());	//roomlist에 모든 Room객체 의 정보를 받아서 접속한 client에 보냄
 					svr.clientcontroller.updateIDlist();
+				}
+				/*** 13.05.17 Modified ***/
+				else if(msg.startsWith("[loginIDCheck] ")){
+					id = msg.substring(15); 
+					LoginController.IDCheck(id);
+				}
+				else if(msg.startsWith("[loginFindID] ")){
+					name = msg.substring(14);
+					reginum = msg.substring(14);
+				}
+				else if(msg.startsWith("[loginFindPass] ")){
+					name = msg.substring(16);
+					id = msg.substring(16);
+					reginum = msg.substring(16);
+				}
+				else if(msg.startsWith("[loginSignUp] ")){
+					name = msg.substring(14);
+					id = msg.substring(14);
+					pass = msg.substring(14);
+					reginum = msg.substring(14);
 					
 				}
+				/*** 13.05.17 Modified ***/
 				else if(msg.startsWith("[MakeRoom] "))
 				{
 					

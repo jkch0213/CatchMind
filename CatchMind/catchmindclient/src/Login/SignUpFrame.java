@@ -1,12 +1,14 @@
-package Client;
+package Login;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
-import DB_Controller.SignUp;
+import Client.CatchmindDriver;
+import DBController.SignUp;
 
 public class SignUpFrame extends JFrame implements ActionListener{
 	
@@ -91,6 +93,11 @@ public class SignUpFrame extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e)
 	{	
 		Component event = (Component)e.getSource();
+		String name = NameText.getText().trim();
+		String id = IDText.getText().trim();
+		String pass = PassText.getText().trim();
+		String rpass = RPassText.getText().trim();
+		String reginum = RegiNumText.getText().trim();
 		
 		if(event == Close)
 		{
@@ -99,22 +106,28 @@ public class SignUpFrame extends JFrame implements ActionListener{
 		else if(event == IDCheck)
 		{
 			ID_CHECK = 1;
-			// DB에서 ID 중복되는지 확인하는 부분
-			DB_Controller.Login.IDCheck();
+			// Server로 id를 보내 중복되는 id가 있는지 확인
+			try {
+				CatchmindDriver.getDos().writeUTF("[loginIDCheck] " + id);
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 		}
 		// 회원가입 버튼을 눌렀을 때
 		else if(event == SignUp)
 		{
-			String n = NameText.getText().trim();
-			String p = PassText.getText().trim();
-			String rp = RPassText.getText().trim();
-			String regnum = RegiNumText.getText().trim();
-			
 			//이름이 빈칸인지 확인
-			if(n.length() == 0 || n == null){
+			if(name.length() == 0 || name == null){
 			JOptionPane.showMessageDialog(NameText, "이름을 입력하세요.",
 					"이름 입력", JOptionPane.INFORMATION_MESSAGE);
+			}
+			//아이디 빈칸인지 확인
+			else if(id.length() == 0 || id == null){
+			JOptionPane.showMessageDialog(NameText, "아이디를 입력하세요.",
+					"아이디 입력", JOptionPane.INFORMATION_MESSAGE);
 			}
 			// 아이디 중복 체크했는지 확인
 			else if(ID_CHECK == 0){
@@ -122,27 +135,38 @@ public class SignUpFrame extends JFrame implements ActionListener{
 						"아이디 중복 체크", JOptionPane.INFORMATION_MESSAGE);
 			}
 			// 비밀번호란이 빈 칸인지 확인
-			else if(p.length() == 0 || p == null){
+			else if(pass.length() == 0 || pass == null){
 				JOptionPane.showMessageDialog(PassText, "비밀번호를 입력하세요",
 						"비밀번호 확인", JOptionPane.INFORMATION_MESSAGE);
 			}
 			// 비밀번호 확인란이 빈 칸인지 확인
-			else if(rp.length() == 0 || rp == null){
+			else if(rpass.length() == 0 || rpass == null){
 				JOptionPane.showMessageDialog(PassText, "비밀번호 확인을 입력하세요",
 						"비밀번호 확인", JOptionPane.INFORMATION_MESSAGE);
 			}
 			// 비밀번호 두 개가 동일한지 확인
-			else if(p != rp){
+			else if(!pass.equals(rpass)){
 				JOptionPane.showMessageDialog(PassText, "비밀번호가 일치하지 않습니다.",
 						"비밀번호 확인", JOptionPane.INFORMATION_MESSAGE);
 			}
 			// 주민등록번호가 6자리인지 확인
-			else if(regnum.length() != 6 || regnum == null){
+			else if(reginum.length() != 6 || reginum == null){
 				JOptionPane.showMessageDialog(PassText, "주민번호 처음 6자리를 입력하세요",
 						"주민등록번호 확인", JOptionPane.INFORMATION_MESSAGE);
 			}
 			//아이디 입력 텍스트에 빈칸인지 확인하고 빈칸이면 메시지 출력
-			signUp = new SignUp();
+			else {
+				try {
+					CatchmindDriver.getDos().writeUTF("[loginSignUp] " + name);
+					CatchmindDriver.getDos().writeUTF("[loginSignUp] " + id);
+					CatchmindDriver.getDos().writeUTF("[loginSignUp] " + pass);
+					CatchmindDriver.getDos().writeUTF("[loginSignUp] " + reginum);
+
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}
 		
 	}

@@ -1,11 +1,12 @@
-package Client;
+package Login;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-
 import javax.swing.*;
 import javax.swing.border.*;
+import Client.CatchmindDriver;
+import Client.CatchmindFrame;
 
 public class LoginPanel extends JPanel implements ActionListener {
 	SignUpFrame signUp;
@@ -13,6 +14,9 @@ public class LoginPanel extends JPanel implements ActionListener {
 	private int WIDTH = 380;
 	private int HEIGHT = 180;
 	private boolean LoginCheck = false; // 로그인되어있는지 확인하는 변수
+
+	FindIDFrame findIDFrame;
+	FindPassFrame findPassFrame;
 
 	JLabel IDLabel;
 	JLabel PasswordLabel;
@@ -40,6 +44,8 @@ public class LoginPanel extends JPanel implements ActionListener {
 		ForgotPS = new JButton("비밀번호 찾기");
 		SignUp = new JButton("SignUp");
 		exit = new JButton("Exit");
+		findIDFrame = new FindIDFrame();
+		findPassFrame = new FindPassFrame();
 
 		IDLabel.setBounds(50, 45, 70, 30);
 		IDText.setBounds(140, 50, 100, 20);
@@ -60,7 +66,6 @@ public class LoginPanel extends JPanel implements ActionListener {
 		this.add(Login);
 		this.add(SignUp);
 		this.add(exit);
-		SignUp.setVisible(true);
 
 		// ActionListener 생성
 		SignUp.addActionListener(this);
@@ -69,7 +74,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		ForgotID.addActionListener(this);
 		ForgotPS.addActionListener(this);
 	}
-
+	
 	public void actionPerformed(ActionEvent e) {
 
 		// TODO Auto-generated method stub
@@ -77,13 +82,12 @@ public class LoginPanel extends JPanel implements ActionListener {
 
 		if (event == SignUp) {
 			signUp.setVisible(true);
-			// 아이디 찾기를 클릭 했을 때
-		} else if (event == ForgotID) {
-			DB_Controller.Login.FindID();
-			// 비밀번호 찾기를 클릭 했을 때
-		} else if (event == ForgotPS) {
-			DB_Controller.Login.FindPassword();
-
+		} else if (event == ForgotID) {	// 아이디 찾기를 클릭 했을 때
+			//아이디 찾기 패널 보여줌
+			findIDFrame.setVisible(true);
+		} else if (event == ForgotPS) {	// 비밀번호 찾기를 클릭 했을 때
+			//비밀번호 찾기 패널 보여줌
+			findPassFrame.setVisible(true);
 		} else if (event == Login) {
 			String ID = IDText.getText().trim();
 			String PW = PasswordText.getText().trim();
@@ -94,10 +98,9 @@ public class LoginPanel extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(Login, "비밀번호를 입력하세요",
 						"Password Error", JOptionPane.ERROR_MESSAGE);
 			} else {
-
 				try {
 					CatchmindDriver.getDos().writeUTF("[login] " + ID);
-
+					CatchmindDriver.getDos().writeUTF("[login] " + PW);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -110,7 +113,6 @@ public class LoginPanel extends JPanel implements ActionListener {
 		}
 
 		if (event == exit) {
-
 			try {
 				CatchmindDriver.exit(); // 서버와 접속을 해지함 : 메인함수의 socket, dis, dos를
 										// close
