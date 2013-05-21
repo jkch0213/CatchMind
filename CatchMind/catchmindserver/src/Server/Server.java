@@ -30,14 +30,14 @@ public class Server
 				Socket socket = server.accept();
 
 				count++;
-				System.out.println(count + " ¹øÂ°  Á¢¼ÓÀÚ : " + socket.getInetAddress());
+				System.out.println(count + " ë²ˆì§¸  ì ‘ì†ì : " + socket.getInetAddress());
 
-				Client client = new Client(this,socket);		//»õ·Î¿î client°¡ Á¢¼ÓÇÏ¸é ¸ğµç clientlist¿¡ Ãß°¡
+				Client client = new Client(this,socket);		//ìƒˆë¡œìš´ clientê°€ ì ‘ì†í•˜ë©´ ëª¨ë“  clientlistì— ì¶”ê°€
 				clientcontroller.getClientlist().addElement(client);
 				
-				System.out.println("ÇöÀç Á¢¼ÓÀÚ ¼ö: "+clientcontroller.getClientlist().size());
+				System.out.println("í˜„ì¬ ì ‘ì†ì ìˆ˜: "+clientcontroller.getClientlist().size());
 
-				clientcontroller.updateIDlist();	//»õ·Î¿î client°¡ Á¢¼ÓÇÏ¸é ¸ğµç clientµéÀÇ Á¢¼ÓÀÚ ID list¸¦ ¾÷µ¥ÀÌÆ®
+				clientcontroller.updateIDlist();	//ìƒˆë¡œìš´ clientê°€ ì ‘ì†í•˜ë©´ ëª¨ë“  clientë“¤ì˜ ì ‘ì†ì ID listë¥¼ ì—…ë°ì´íŠ¸
 			}
 		} catch (Exception e) { e.printStackTrace(); }
 	}

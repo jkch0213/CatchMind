@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import Client.CatchmindDriver;
-import DBController.SignUp;
 
 public class SignUpFrame extends JFrame implements ActionListener{
 	
@@ -16,7 +15,6 @@ public class SignUpFrame extends JFrame implements ActionListener{
 	private int WIDTH = 380;
 	private int HEIGHT = 400;
 	
-	SignUp signUp;
 	
 	JLabel NameLabel;
 	JLabel IDLabel;
@@ -25,6 +23,7 @@ public class SignUpFrame extends JFrame implements ActionListener{
 	JLabel RegiNumLabel;
 	TextField NameText;
 	public static TextField IDText;
+	public static Component signUpFrame;
 	public TextField PassText;
 	public TextField RPassText;
 	public TextField RegiNumText;
@@ -32,29 +31,29 @@ public class SignUpFrame extends JFrame implements ActionListener{
 	JButton SignUp;
 	JButton Close;
 	
-	int ID_CHECK;
+	int ID_CHECK=0;
 	
 	public SignUpFrame(){
 		new TitledBorder(new EtchedBorder(),"Sign-Up");
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);		// ¿ìÃø »ó´Ü X¹öÆ°À» ´­·¯µµ ÇÁ·¹ÀÓÀÌ ´İÈ÷Áö ¾ÊÀ½
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);		// ìš°ì¸¡ ìƒë‹¨ Xë²„íŠ¼ì„ ëˆŒëŸ¬ë„ í”„ë ˆì„ì´ ë‹«íˆì§€ ì•ŠìŒ
 
 		this.setSize(new Dimension(WIDTH,HEIGHT));
 
 		this.setLayout(null);
 		
-		NameLabel = new JLabel("ÀÌ¸§",10);
-		IDLabel = new JLabel("¾ÆÀÌµğ",10);
-		PassLabel = new JLabel("ºñ¹Ğ¹øÈ£",10);
-		RPassLabel = new JLabel("ºñ¹Ğ¹øÈ£ È®ÀÎ",10);
-		RegiNumLabel = new JLabel("ÁÖ¹Îµî·Ï¹øÈ£",10);
+		NameLabel = new JLabel("ì´ë¦„",10);
+		IDLabel = new JLabel("ì•„ì´ë””",10);
+		PassLabel = new JLabel("ë¹„ë°€ë²ˆí˜¸",10);
+		RPassLabel = new JLabel("ë¹„ë°€ë²ˆí˜¸ í™•ì¸",10);
+		RegiNumLabel = new JLabel("ì£¼ë¯¼ë“±ë¡ë²ˆí˜¸",10);
 		NameText = new TextField(20);
 		IDText = new TextField(20);
 		PassText = new TextField(20);
 		RPassText = new TextField(20);
 		RegiNumText = new TextField(20);
-		IDCheck = new JButton("Áßº¹È®ÀÎ");
-		SignUp = new JButton("È¸¿ø°¡ÀÔ");
-		Close = new JButton("´İ±â");
+		IDCheck = new JButton("ì¤‘ë³µí™•ì¸");
+		SignUp = new JButton("íšŒì›ê°€ì…");
+		Close = new JButton("ë‹«ê¸°");
 		
 		NameLabel.setBounds(50, 45, 90, 30);
 		IDLabel.setBounds(50, 85, 90, 30);
@@ -101,66 +100,75 @@ public class SignUpFrame extends JFrame implements ActionListener{
 		
 		if(event == Close)
 		{
-			this.setVisible(false);		
+			this.setVisible(false);
+			NameText.setText("");
+			IDText.setText("");
+			PassText.setText("");
+			RPassText.setText("");
+			RegiNumText.setText("");
 		}
 		else if(event == IDCheck)
 		{
-			ID_CHECK = 1;
-			// Server·Î id¸¦ º¸³» Áßº¹µÇ´Â id°¡ ÀÖ´ÂÁö È®ÀÎ
-			try {
-				CatchmindDriver.getDos().writeUTF("[loginIDCheck] " + id);
+			if(id.length() == 0 || id == null){
+				JOptionPane.showMessageDialog(IDText, "ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì„¸ìš”",
+						"ì•„ì´ë”” ì…ë ¥", JOptionPane.INFORMATION_MESSAGE);
+			}else{
+				ID_CHECK = 1;
+				// Serverë¡œ idë¥¼ ë³´ë‚´ ì¤‘ë³µë˜ëŠ” idê°€ ìˆëŠ”ì§€ í™•ì¸
+				try {
+					CatchmindDriver.getDos().writeUTF("[LoginIDCheck] " + id);
 				
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+			
+				}
 			}
 			
 		}
-		// È¸¿ø°¡ÀÔ ¹öÆ°À» ´­·¶À» ¶§
+		// íšŒì›ê°€ì… ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ
 		else if(event == SignUp)
 		{
-			//ÀÌ¸§ÀÌ ºóÄ­ÀÎÁö È®ÀÎ
+			//ì´ë¦„ì´ ë¹ˆì¹¸ì¸ì§€ í™•ì¸
 			if(name.length() == 0 || name == null){
-			JOptionPane.showMessageDialog(NameText, "ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä.",
-					"ÀÌ¸§ ÀÔ·Â", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(NameText, "ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”.",
+					"ì´ë¦„ ì…ë ¥", JOptionPane.INFORMATION_MESSAGE);
 			}
-			//¾ÆÀÌµğ ºóÄ­ÀÎÁö È®ÀÎ
+			//ì•„ì´ë”” ë¹ˆì¹¸ì¸ì§€ í™•ì¸
 			else if(id.length() == 0 || id == null){
-			JOptionPane.showMessageDialog(NameText, "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ¼¼¿ä.",
-					"¾ÆÀÌµğ ÀÔ·Â", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(NameText, "ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì„¸ìš”.",
+					"ì•„ì´ë”” ì…ë ¥", JOptionPane.INFORMATION_MESSAGE);
 			}
-			// ¾ÆÀÌµğ Áßº¹ Ã¼Å©Çß´ÂÁö È®ÀÎ
-			else if(ID_CHECK == 0){
-				JOptionPane.showMessageDialog(IDCheck, "¾ÆÀÌµğ°¡ Áßº¹µÇ´ÂÁö È®ÀÎÇÏ¼¼¿ä",
-						"¾ÆÀÌµğ Áßº¹ Ã¼Å©", JOptionPane.INFORMATION_MESSAGE);
+			// ì•„ì´ë”” ì¤‘ë³µ ì²´í¬í–ˆëŠ”ì§€ í™•ì¸
+			else if(ID_CHECK != 1){
+				JOptionPane.showMessageDialog(IDCheck, "ì•„ì´ë””ê°€ ì¤‘ë³µë˜ëŠ”ì§€ í™•ì¸í•˜ì„¸ìš”",
+						"ì•„ì´ë”” ì¤‘ë³µ ì²´í¬", JOptionPane.INFORMATION_MESSAGE);
 			}
-			// ºñ¹Ğ¹øÈ£¶õÀÌ ºó Ä­ÀÎÁö È®ÀÎ
+			// ë¹„ë°€ë²ˆí˜¸ë€ì´ ë¹ˆ ì¹¸ì¸ì§€ í™•ì¸
 			else if(pass.length() == 0 || pass == null){
-				JOptionPane.showMessageDialog(PassText, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä",
-						"ºñ¹Ğ¹øÈ£ È®ÀÎ", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(PassText, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”",
+						"ë¹„ë°€ë²ˆí˜¸ í™•ì¸", JOptionPane.INFORMATION_MESSAGE);
 			}
-			// ºñ¹Ğ¹øÈ£ È®ÀÎ¶õÀÌ ºó Ä­ÀÎÁö È®ÀÎ
+			// ë¹„ë°€ë²ˆí˜¸ í™•ì¸ë€ì´ ë¹ˆ ì¹¸ì¸ì§€ í™•ì¸
 			else if(rpass.length() == 0 || rpass == null){
-				JOptionPane.showMessageDialog(PassText, "ºñ¹Ğ¹øÈ£ È®ÀÎÀ» ÀÔ·ÂÇÏ¼¼¿ä",
-						"ºñ¹Ğ¹øÈ£ È®ÀÎ", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(PassText, "ë¹„ë°€ë²ˆí˜¸ í™•ì¸ì„ ì…ë ¥í•˜ì„¸ìš”",
+						"ë¹„ë°€ë²ˆí˜¸ í™•ì¸", JOptionPane.INFORMATION_MESSAGE);
 			}
-			// ºñ¹Ğ¹øÈ£ µÎ °³°¡ µ¿ÀÏÇÑÁö È®ÀÎ
+			// ë¹„ë°€ë²ˆí˜¸ ë‘ ê°œê°€ ë™ì¼í•œì§€ í™•ì¸
 			else if(!pass.equals(rpass)){
-				JOptionPane.showMessageDialog(PassText, "ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.",
-						"ºñ¹Ğ¹øÈ£ È®ÀÎ", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(PassText, "ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.",
+						"ë¹„ë°€ë²ˆí˜¸ í™•ì¸", JOptionPane.INFORMATION_MESSAGE);
 			}
-			// ÁÖ¹Îµî·Ï¹øÈ£°¡ 6ÀÚ¸®ÀÎÁö È®ÀÎ
+			// ì£¼ë¯¼ë“±ë¡ë²ˆí˜¸ê°€ 6ìë¦¬ì¸ì§€ í™•ì¸
 			else if(reginum.length() != 6 || reginum == null){
-				JOptionPane.showMessageDialog(PassText, "ÁÖ¹Î¹øÈ£ Ã³À½ 6ÀÚ¸®¸¦ ÀÔ·ÂÇÏ¼¼¿ä",
-						"ÁÖ¹Îµî·Ï¹øÈ£ È®ÀÎ", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(PassText, "ì£¼ë¯¼ë²ˆí˜¸ ì²˜ìŒ 6ìë¦¬ë¥¼ ì…ë ¥í•˜ì„¸ìš”",
+						"ì£¼ë¯¼ë“±ë¡ë²ˆí˜¸ í™•ì¸", JOptionPane.INFORMATION_MESSAGE);
 			}
-			//¾ÆÀÌµğ ÀÔ·Â ÅØ½ºÆ®¿¡ ºóÄ­ÀÎÁö È®ÀÎÇÏ°í ºóÄ­ÀÌ¸é ¸Ş½ÃÁö Ãâ·Â
+			//ì•„ì´ë”” ì…ë ¥ í…ìŠ¤íŠ¸ì— ë¹ˆì¹¸ì¸ì§€ í™•ì¸í•˜ê³  ë¹ˆì¹¸ì´ë©´ ë©”ì‹œì§€ ì¶œë ¥
 			else {
 				try {
-					CatchmindDriver.getDos().writeUTF("[loginSignUp] " + name);
-					CatchmindDriver.getDos().writeUTF("[loginSignUp] " + id);
-					CatchmindDriver.getDos().writeUTF("[loginSignUp] " + pass);
-					CatchmindDriver.getDos().writeUTF("[loginSignUp] " + reginum);
+					CatchmindDriver.getDos().writeUTF
+					("[LoginSignUp] " + name + "\t" + id + "\t" + pass + "\t" + reginum);
 
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -168,6 +176,5 @@ public class SignUpFrame extends JFrame implements ActionListener{
 				}
 			}
 		}
-		
 	}
 }

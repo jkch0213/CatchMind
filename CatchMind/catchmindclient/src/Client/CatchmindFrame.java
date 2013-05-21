@@ -13,6 +13,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import Login.FindIDFrame;
+import Login.FindPassFrame;
 import Login.LoginPanel;
 import Login.SignUpFrame;
 
@@ -24,7 +26,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 	private int WIDTH = 1000;
 	private int HEIGHT = 700;
 	private StringTokenizer tokenizer1;
-	private String[] tokens1 = new String[200];		//ÃÖ´ë 200°³ÀÇ ¹æ±îÁö
+	private String[] tokens1 = new String[200];		//ìµœëŒ€ 200ê°œì˜ ë°©ê¹Œì§€
 
 	private StringTokenizer tokenizer2;
 	private String[] tokens2 = new String[20];
@@ -33,14 +35,14 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 	private static RoomInformationFrame roomInfoframe;
 	
 	MyInformation myInformation;
-	RoomPanel roompanel;		// ¹æ ¸ñ·ÏÀ» º¸°í ÀÔÀåÇÏ°Å³ª ¹æÀ» ¸¸µé ¼ö ÀÖ´Â ÆĞ³Î
-	ChatPanel chatpanel;		// Á¢¼ÓÇÑ client¿Í Ã¤ÆÃÀ» ÇÒ ¼ö ÀÖ´Â ÆĞ³Î
-	IDlistPanel idlistpanel;		// Á¢¼ÓÁßÀÎ ID¸¦ ¾Ë·ÁÁÖ´Â ÆĞ³Î
-	InformationPanel informationpanel;		// Á¤º¸ ¹× »óÅÂ¸¦ ¾Ë·Á ÁÖ´Â ÆĞ³Î
-	GamePanel gamepanel;		// °ÔÀÓÀ» ÁøÇàÇÏ´Â ÆĞ³Î
-	LoginPanel loginPanel;		//·Î±×ÀÎ ÆäÀÌÁö º¸¿©ÁÖ´Â ÇÁ·¹ÀÓ
-	SignUpFrame signUp;			//È¸¿ø°¡ÀÔ ÆäÀÌÁö º¸¿©ÁÖ´Â ÇÁ·¹ÀÓ
-	String state;			//Ã¢¿©·¯°³ ¶ß´Â°É ¹æÁöÇÏ±âÀ§ÇØ....³ªÁß¿¡ ÀÚ¼¼È÷ ÄÚµù
+	RoomPanel roompanel;		// ë°© ëª©ë¡ì„ ë³´ê³  ì…ì¥í•˜ê±°ë‚˜ ë°©ì„ ë§Œë“¤ ìˆ˜ ìˆëŠ” íŒ¨ë„
+	ChatPanel chatpanel;		// ì ‘ì†í•œ clientì™€ ì±„íŒ…ì„ í•  ìˆ˜ ìˆëŠ” íŒ¨ë„
+	IDlistPanel idlistpanel;		// ì ‘ì†ì¤‘ì¸ IDë¥¼ ì•Œë ¤ì£¼ëŠ” íŒ¨ë„
+	InformationPanel informationpanel;		// ì •ë³´ ë° ìƒíƒœë¥¼ ì•Œë ¤ ì£¼ëŠ” íŒ¨ë„
+	GamePanel gamepanel;		// ê²Œì„ì„ ì§„í–‰í•˜ëŠ” íŒ¨ë„
+	LoginPanel loginPanel;		//ë¡œê·¸ì¸ í˜ì´ì§€ ë³´ì—¬ì£¼ëŠ” í”„ë ˆì„
+	SignUpFrame signUp;			//íšŒì›ê°€ì… í˜ì´ì§€ ë³´ì—¬ì£¼ëŠ” í”„ë ˆì„
+	String state;			//ì°½ì—¬ëŸ¬ê°œ ëœ¨ëŠ”ê±¸ ë°©ì§€í•˜ê¸°ìœ„í•´....ë‚˜ì¤‘ì— ìì„¸íˆ ì½”ë”©
 	
 	JButton home;
 	JButton exit;
@@ -60,21 +62,35 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 	public CatchmindFrame(Socket socket)
 	{	
 		
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);		// ¿ìÃø »ó´Ü X¹öÆ°À» ´­·¯µµ ÇÁ·¹ÀÓÀÌ ´İÈ÷Áö ¾ÊÀ½
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);		// ìš°ì¸¡ ìƒë‹¨ Xë²„íŠ¼ì„ ëˆŒëŸ¬ë„ í”„ë ˆì„ì´ ë‹«íˆì§€ ì•ŠìŒ
 
 		this.setTitle("Catchmind Game");
 		this.setSize(WIDTH,HEIGHT);
-
+		loginPanel = new LoginPanel();
+		exit = new JButton("ì¢…ë£Œ");	
+		roomMake = new JButton("ë°©ë§Œë“¤ê¸°");
+		join= new JButton("ì°¸ì—¬í•˜ê¸°");
+		itemShop = new JButton("ê²Œì„ì•„ì´í…œ");
+		avatar = new JButton("ì•„ë°”íƒ€ìƒµ");
+		roomInfo = new JButton("ë°©ì •ë³´");
+		myInfo = new JButton("ë‚´ì •ë³´");
+		home = new JButton("ë’¤ë¡œ");	
+		myInformation = new MyInformation();
+		roompanel = new RoomPanel();
+		chatpanel = new ChatPanel();
+		informationpanel = new InformationPanel();	
+		gamepanel = new GamePanel();
+		
+		
 		LoginRoom();
 		idlistpanel = new IDlistPanel();
 		Thread Catchmind;
-		Catchmind = new Thread(this);	// ½º·¹µå »ı¼º
+		Catchmind = new Thread(this);	// ìŠ¤ë ˆë“œ ìƒì„±
 		Catchmind.start();
 
 	}
 	public void LoginRoom(){
 		
-		loginPanel = new LoginPanel();
 		this.setLayout(null);
 		
 		loginPanel.setBounds(200,150,380,180);
@@ -89,14 +105,6 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 	
 	public void WaitRoom(){
 		
-		exit = new JButton("Á¾·á");	
-		roomMake = new JButton("¹æ¸¸µé±â");
-		join= new JButton("Âü¿©ÇÏ±â");
-		itemShop = new JButton("°ÔÀÓ¾ÆÀÌÅÛ");
-		avatar = new JButton("¾Æ¹ÙÅ¸¼¥");
-		roomInfo = new JButton("¹æÁ¤º¸");
-		myInfo = new JButton("³»Á¤º¸");
-		
 		exit.addActionListener(this);
 		roomMake.addActionListener(this);
 		join.addActionListener(this);
@@ -104,18 +112,8 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		avatar.addActionListener(this);
 		roomInfo.addActionListener(this);
 		myInfo.addActionListener(this);
-
-		home = new JButton("µÚ·Î");	
 		home.addActionListener(this);
 
-		
-		myInformation = new MyInformation();
-		roompanel = new RoomPanel();
-		chatpanel = new ChatPanel();
-		
-		informationpanel = new InformationPanel();	
-		gamepanel = new GamePanel();
-		
 		this.setLayout(null);
 
 		exit.setBounds(800,620,95,30);
@@ -125,29 +123,24 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		itemShop.setBounds(680,20,115,30);
 		avatar.setBounds(800,20,95,30);
 		myInfo.setBounds(580,20,95,30);
-		
-		
-		
 		roompanel.setBounds(100, 70, 500, 280);
 //		home.setBounds(670,520,80,30);
 //		gamepanel.setBounds(100, 100, 500, 300);
 		chatpanel.setBounds(100, 350, 500, 250);	
 		idlistpanel.setBounds(630, 70, 265, 280);	
 //		informationpanel.setBounds(520, 300, 250, 210);	
+		
 //		this.add(roompanel);
 //		this.add(chatpanel);
 		this.add(idlistpanel);
 //		this.add(informationpanel);
-
-		
-	    this.add(exit);
+		this.add(exit);
 		this.add(roomMake);
 		this.add(join);
 		this.add(roomInfo);
 		this.add(itemShop);
 		this.add(avatar);
 		this.add(myInfo);
-		
 		this.add(gamepanel);
 		this.add(chatpanel);
 		this.add(roompanel);
@@ -209,7 +202,7 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 			{
 				line = CatchmindDriver.getDis().readUTF();
 				
-				if(line.startsWith("[Chat]"))		// [ / ·Î ½ÃÀÛÇÏ´Â ¸Ş½ÃÁö¸é Ã¤ÆÃÃ¢¿¡ ¸Ş½ÃÁö¸¦ Ãâ·Â
+				if(line.startsWith("[Chat]"))		// [ / ë¡œ ì‹œì‘í•˜ëŠ” ë©”ì‹œì§€ë©´ ì±„íŒ…ì°½ì— ë©”ì‹œì§€ë¥¼ ì¶œë ¥
 				{
 					System.out.println(line);
 					chatpanel.chatarea.append(line.substring(7)+"\n");
@@ -219,13 +212,16 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 //					myInformation.setNumId(line.substring(8));
 //					myInformation.setGameId(line.substring(8));
 				}
-				else if(line.startsWith("[login]"))
+				else if(line.startsWith("[Login]"))
 				{
-					System.out.println(line);
 					removeLoginPanel();
 					WaitRoom();
+					JOptionPane.showMessageDialog(SignUpFrame.IDText, line.substring(7) + "ë‹˜ ë°˜ê°‘ìŠµë‹ˆë‹¤.^^");
 					repaint();
-					
+				}
+				else if(line.startsWith("[LoginFail]")){
+					JOptionPane.showMessageDialog(LoginPanel.loginPanel, "ì•„ì´ë””ë‚˜ ë¹„ë°€ë²ˆí˜¸ê°€ ë§ì§€ ì•ŠìŠµë‹ˆë‹¤. " 
+							,"Login Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else if(line.startsWith("[MadeRoom] "))
 				{
@@ -234,11 +230,11 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 					repaint();
 					
 				}
-				if(line.startsWith("[MakeRoom]"))
+				else if(line.startsWith("[MakeRoom]"))
 				{
 					
 				}
-				if(line.startsWith("[RoomSize]"))
+				else if(line.startsWith("[RoomSize]"))
 				{
 					int j=roompanel.tmodel.getRowCount();
 					
@@ -246,18 +242,18 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 						roompanel.tmodel.fireTableRowsDeleted(0, j);
 					
 				}
-				if(line.startsWith("[Roomlist]"))	// [Roomlist] À¸·Î ½ÃÀÛÇÏ´Â ¸Ş½ÃÁö¸é room Å×ÀÌºí º¯°æ
+				else if(line.startsWith("[Roomlist]"))	// [Roomlist] ìœ¼ë¡œ ì‹œì‘í•˜ëŠ” ë©”ì‹œì§€ë©´ room í…Œì´ë¸” ë³€ê²½
 				{
 					
 					System.out.println(line+"roomlistline");
-					tokenizer1 = new StringTokenizer(line.substring(10),"\n");		//row¸¦ \nÀ» ±âÁØÀ¸·Î ³ª´®
+					tokenizer1 = new StringTokenizer(line.substring(10),"\n");		//rowë¥¼ \nì„ ê¸°ì¤€ìœ¼ë¡œ ë‚˜ëˆ”
 					int i =0;
 
 					while(tokenizer1.hasMoreTokens())
 					{
-						tokens1[i] = tokenizer1.nextToken();	// ³ª´« rowµéÀ» tokens1¿¡ °¢°¢ ÀúÀå
+						tokens1[i] = tokenizer1.nextToken();	// ë‚˜ëˆˆ rowë“¤ì„ tokens1ì— ê°ê° ì €ì¥
 
-						tokenizer2 = new StringTokenizer(tokens1[i],"\t");		// ³ª´« row¸¦ colÀ»\t¸¦ ±âÁØÀ¸·Î ³ª´®
+						tokenizer2 = new StringTokenizer(tokens1[i],"\t");		// ë‚˜ëˆˆ rowë¥¼ colì„\të¥¼ ê¸°ì¤€ìœ¼ë¡œ ë‚˜ëˆ”
 						int j =0;
 						System.out.println(i+"tokens1[i]:"+tokens2[i]);
 
@@ -266,41 +262,40 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 							tokens2[j] = tokenizer2.nextToken();
 							System.out.println(j+"tokens2[j]:"+tokens2[j]);
 							j++;
-							
 						}		
 						System.out.println("tokens2:"+tokens2);
-						roompanel.tmodel.addRow(tokens2);	// ¹æ ¸ñ·Ï Å×ÀÌºí¿¡ ÇÑ°³ÀÇ row¾¿ Ãß°¡	
+						roompanel.tmodel.addRow(tokens2);	// ë°© ëª©ë¡ í…Œì´ë¸”ì— í•œê°œì˜ rowì”© ì¶”ê°€	
 						i++;
-					}		
+					}
 					saveRowNum=i;
 				}
-				if(line.startsWith("[EnterRoom]"))
+				else if(line.startsWith("[EnterRoom]"))
 				{
-					tokenizer2 = new StringTokenizer(line.substring(13),"\t");		// /t¸¦ ±âÁØÀ¸·Î colÀ» ±¸º°
+					tokenizer2 = new StringTokenizer(line.substring(13),"\t");		// /të¥¼ ê¸°ì¤€ìœ¼ë¡œ colì„ êµ¬ë³„
 					int i =0;
 
 					while(tokenizer2.hasMoreTokens())
 					{
-						tokens2[i] = tokenizer2.nextToken();		// tokens[0] ¹æ¹øÈ£	 tokens[1] ÀÔÀå ¼ö ÇöÈ²
+						tokens2[i] = tokenizer2.nextToken();		// tokens[0] ë°©ë²ˆí˜¸	 tokens[1] ì…ì¥ ìˆ˜ í˜„í™©
 						i++;
 					}
-					for(int row=0;row<roompanel.tmodel.getRowCount();row++)		// roomtableÀÇ row¼ö¸¸Å­ ¹ãº¹
+					for(int row=0;row<roompanel.tmodel.getRowCount();row++)		// roomtableì˜ rowìˆ˜ë§Œí¼ ë°¤ë³µ
 					{
-						if(tokens2[0].equals(roompanel.tmodel.getValueAt(row, 0)))	// ¹æ¹øÈ£¿Í 0¹øÂ° column°ªÀÌ °°À¸¸é
+						if(tokens2[0].equals(roompanel.tmodel.getValueAt(row, 0)))	// ë°©ë²ˆí˜¸ì™€ 0ë²ˆì§¸ columnê°’ì´ ê°™ìœ¼ë©´
 						{
-							roompanel.tmodel.setValueAt(tokens2[1], row, 2);		// ÇØ´ç ¹æÀÇ ÀÎ¿ø¼ö ÇöÈ²À» º¯°æ
+							roompanel.tmodel.setValueAt(tokens2[1], row, 2);		// í•´ë‹¹ ë°©ì˜ ì¸ì›ìˆ˜ í˜„í™©ì„ ë³€ê²½
 						}
 					}
 					
 				}
-				if(line.startsWith("[SetGamePanel]"))
+				else if(line.startsWith("[SetGamePanel]"))
 				{
 					System.out.println(line);
 					removeWaitRoom();
 					repaint();
 				}
 				
-				if(line.startsWith("[RoomTitle]"))
+				else if(line.startsWith("[RoomTitle]"))
 				{
 					System.out.println(line);
 					System.out.println(line.substring(11));
@@ -308,37 +303,72 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 					
 				}
 				
-				if(line.startsWith("[RoomPeopleCount]"))
+				else if(line.startsWith("[RoomPeopleCount]"))
 				{
 					setPeopleCount(line.substring(17));
 					
 				}
 				
-				if(line.startsWith("[RoomIdList]"))
+				else if(line.startsWith("[RoomIdList]"))
 				{
 					setIdList(line.substring(12));
 //			       CatchmindDriver.getDos().writeUTF("[EndSetRoomInfo]");
 
 					
 				}
-				if(line.startsWith("[RoomNum]"))
+				else if(line.startsWith("[RoomNum]"))
 				{
 					setRoomNum(line.substring(9));
 				}
-				if(line.startsWith("[EndSetInfo]"))
+				else if(line.startsWith("[EndSetInfo]"))
 				{
 //					getRoomInfoframe().setVisible(true);
 				}
 				
 				
-				if(line.startsWith("[Clientlist]"))	// [Clientlist] ·Î ½ÃÀÛÇÏ´Â ¸Ş½ÃÁö¸é Á¢¼ÓÀÚ ¸ñ·ÏÀ» Ãâ·Â
+				else if(line.startsWith("[Clientlist]"))	// [Clientlist] ë¡œ ì‹œì‘í•˜ëŠ” ë©”ì‹œì§€ë©´ ì ‘ì†ì ëª©ë¡ì„ ì¶œë ¥
 				{
 					idlistpanel.idlistarea.setText("");
 					idlistpanel.idlistarea.append(line.substring(12)+"\n");
 				}
+				/* ---------------------- 2013.05.20 ì›”  ---------------------- */
+				else if(line.startsWith("[LoginIDCheck]")){
+					if(line.substring(14).equals("true ")){
+						System.out.println("í˜„ì¬ ì•„ì´ë””ë¡œ ê°€ì…ì´ ê°€ëŠ¥í•©ë‹ˆë‹¤");
+						JOptionPane.showMessageDialog(SignUpFrame.IDText, "í˜„ì¬ ì•„ì´ë””ë¡œ ê°€ì…ì´ ê°€ëŠ¥í•©ë‹ˆë‹¤");
+					}
+					else if(line.substring(14).equals("false ")){
+						JOptionPane.showMessageDialog(SignUpFrame.IDText, "í˜„ì¬ ì•„ì´ë””ë¡œ ê°€ì…ì´ ë¶ˆê°€ëŠ¥í•©ë‹ˆë‹¤. " +
+								"ë‹¤ë¥¸ ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì„¸ìš”","ID Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else if(line.startsWith("[LoginSignUp]")){
+					JOptionPane.showMessageDialog(SignUpFrame.signUpFrame, "ê°€ì…ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
+					
+				}
+				else if(line.startsWith("[LoginFindPass]")){
+					if(line.substring(15).trim() != null){
+						JOptionPane.showMessageDialog(FindPassFrame.findPassFrame,
+							"ë¹„ë°€ë²ˆí˜¸ëŠ” : " + line.substring(15) + "ì…ë‹ˆë‹¤.");
+					}else if(line.substring(15).trim() == null){
+						JOptionPane.showMessageDialog(FindPassFrame.findPassFrame,
+								"ì…ë ¥í•œ ì •ë³´ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤. ë‹¤ì‹œ í•œ ë²ˆ í™•ì¸í•´ì£¼ì„¸ìš”");
+					}
+				}
+				else if(line.startsWith("[LoginFindID]")){
+					if(line.substring(13).trim() != null){
+						JOptionPane.showMessageDialog(FindIDFrame.findIDFrame,
+							"ì•„ì´ë””ëŠ” : " + line.substring(13) + "ì…ë‹ˆë‹¤.");
+					}else if(line.substring(13).trim() == null){
+						JOptionPane.showMessageDialog(FindIDFrame.findIDFrame,
+								"ì…ë ¥í•œ ì •ë³´ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤. ë‹¤ì‹œ í•œ ë²ˆ í™•ì¸í•´ì£¼ì„¸ìš”.");
+					}
+				}
+				/* ------------------------ 2013.05.20 ì›”  ------------------------ */
+
 			}
 		} catch (IOException e) {  
-			System.out.println("¼­¹ö¿Í ¿¬°áÀÌ ²÷¾îÁ³½À´Ï´Ù.");
+			System.out.println("ì„œë²„ì™€ ì—°ê²°ì´ ëŠì–´ì¡ŒìŠµë‹ˆë‹¤.");
 		}
 	
 		
@@ -352,12 +382,12 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		if(event.getSource() == exit)
 		{
 			try {
-				CatchmindDriver.exit();		// ¼­¹ö¿Í Á¢¼ÓÀ» ÇØÁöÇÔ : ¸ŞÀÎÇÔ¼öÀÇ socket, dis, dos¸¦ close
+				CatchmindDriver.exit();		// ì„œë²„ì™€ ì ‘ì†ì„ í•´ì§€í•¨ : ë©”ì¸í•¨ìˆ˜ì˜ socket, dis, dosë¥¼ close
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			this.setVisible(false);			// Á¾·á ¹öÆ°À» ´©¸£¸é ÇÁ·¹ÀÓÀ» ´İÀ½
-//			SoundEffect.BGM.stop();			// ¹è°æÀ½¾ÇÀ» ²û
+			this.setVisible(false);			// ì¢…ë£Œ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ í”„ë ˆì„ì„ ë‹«ìŒ
+//			SoundEffect.BGM.stop();			// ë°°ê²½ìŒì•…ì„ ë”
 		}
 		
 		if(event.getSource()== roomMake){
@@ -369,10 +399,10 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		else if(event.getSource()==roomInfo)
 		{
 			int row = -1;
-			row = roompanel.roomtable.getSelectedRow();		// ÀÔÀåÇÒ ¹æÀ» ¼±ÅÃÇÏÁö ¾ÊÀº °æ¿ì
+			row = roompanel.roomtable.getSelectedRow();		// ì…ì¥í•  ë°©ì„ ì„ íƒí•˜ì§€ ì•Šì€ ê²½ìš°
 			if (row == -1)
 			{
-				JOptionPane.showMessageDialog(join, "¹æÀ» ¼±ÅÃÇØÁÖ¼¼¿ä",
+				JOptionPane.showMessageDialog(join, "ë°©ì„ ì„ íƒí•´ì£¼ì„¸ìš”",
 						"ID Error", JOptionPane.ERROR_MESSAGE);
 			}
 			else
@@ -396,23 +426,23 @@ public class CatchmindFrame extends JFrame implements Runnable, ActionListener
 		{
 			String msg;
 			int row = -1;
-			row = roompanel.roomtable.getSelectedRow();		// ÀÔÀåÇÒ ¹æÀ» ¼±ÅÃÇÏÁö ¾ÊÀº °æ¿ì
+			row = roompanel.roomtable.getSelectedRow();		// ì…ì¥í•  ë°©ì„ ì„ íƒí•˜ì§€ ì•Šì€ ê²½ìš°
 			if (row == -1)
 			{
-				JOptionPane.showMessageDialog(join, "¹æÀ» ¼±ÅÃÇØÁÖ¼¼¿ä",
+				JOptionPane.showMessageDialog(join, "ë°©ì„ ì„ íƒí•´ì£¼ì„¸ìš”",
 						"ID Error", JOptionPane.ERROR_MESSAGE);
 			}
-			else if(roompanel.roomtable.getValueAt(row, 2).equals("Full"))	// ¹æ »óÅÂ°¡ FullÀÌ¸é ÀÔÀå ºÒ°¡
+			else if(roompanel.roomtable.getValueAt(row, 2).equals("Full"))	// ë°© ìƒíƒœê°€ Fullì´ë©´ ì…ì¥ ë¶ˆê°€
 			{
-				JOptionPane.showMessageDialog(join, "¹æÀÌ²ËÃ¡½À´Ï´Ù",
+				JOptionPane.showMessageDialog(join, "ë°©ì´ê½‰ì°¼ìŠµë‹ˆë‹¤",
 						"ID Error", JOptionPane.ERROR_MESSAGE);
 			}
-			else	// ¹æ »óÅÂ°¡ FullÀÌ ¾Æ´Ï¸é ¼­¹ö¿¡ ÀÔÀåÀ» ¿äÃ»
+			else	// ë°© ìƒíƒœê°€ Fullì´ ì•„ë‹ˆë©´ ì„œë²„ì— ì…ì¥ì„ ìš”ì²­
 			{
-				msg = "[EnterRoom] " + roompanel.roomtable.getValueAt(row, 0);		//¼±ÅÃÇÑ ¹æ¹øÈ£¸¦ ¹ŞÀ½
+				msg = "[EnterRoom] " + roompanel.roomtable.getValueAt(row, 0);		//ì„ íƒí•œ ë°©ë²ˆí˜¸ë¥¼ ë°›ìŒ
 				System.out.println("msg");
 				try {
-					CatchmindDriver.getDos().writeUTF(msg);			//[Enter Room] ¹æ¹øÈ£ ¸Ş½ÃÁö¸¦ ¼­¹ö·Î º¸³¿
+					CatchmindDriver.getDos().writeUTF(msg);			//[Enter Room] ë°©ë²ˆí˜¸ ë©”ì‹œì§€ë¥¼ ì„œë²„ë¡œ ë³´ëƒ„
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

@@ -35,10 +35,10 @@ public class InfoFrame extends JFrame implements  ActionListener
 		 this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
 		 
 
-		this.setTitle("³»Á¤º¸");
+		this.setTitle("ë‚´ì •ë³´");
 
-		exit = new JButton("Ãë¼Ò");	
-		enter = new JButton("È®ÀÎ");	
+		exit = new JButton("ì·¨ì†Œ");	
+		enter = new JButton("í™•ì¸");	
 
 		
 		exit.addActionListener(this);
@@ -106,7 +106,7 @@ public class InfoFrame extends JFrame implements  ActionListener
 		{
 			
 			this.setVisible(false);
-					// ¹è°æÀ½¾ÇÀ» ²û
+					// ë°°ê²½ìŒì•…ì„ ë”
 		}
 		
 		

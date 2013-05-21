@@ -16,38 +16,38 @@ public class RoomController
 		roomnum = 0;
 	}
 	
-	public int indexRoom(int roomnum)			// ¹æ¹øÈ£¸¦ ÅëÇØ listÀÇ ÀÎÅØ½º¸¦ ¹İÈ¯
+	public int indexRoom(int roomnum)			// ë°©ë²ˆí˜¸ë¥¼ í†µí•´ listì˜ ì¸í…ìŠ¤ë¥¼ ë°˜í™˜
 	{
 		for(int i=0;i<roomlist.size();i++)
 		{
 			if(roomlist.get(i).getNumber().equals(roomnum+"")) return i;
 		}
-		return -1;		// ¹æ¹øÈ£°¡ ¾øÀ¸¸é -1 ¿À·ù°ªÀ» ¹İÈ¯
+		return -1;		// ë°©ë²ˆí˜¸ê°€ ì—†ìœ¼ë©´ -1 ì˜¤ë¥˜ê°’ì„ ë°˜í™˜
 	}
 	
 	
 
 	public String enterRoom(Client player)
 	{
-		int i = indexRoom(player.getRoomnum());			// ÇØ´ç ¹æ¹øÈ£·Î roomlistÀÇ index¸¦ ¹Ş¾Æ¿È 
-		roomlist.get(i).playerlist.add(player);			// ¹æ¿¡ ÀÔÀåÇÑ client¸¦ playerlist¿¡ Ãß°¡
-		roomlist.get(i).updateCondition();				// ÀÎ¿ø ÇüÈ²À» º¯°æ
+		int i = indexRoom(player.getRoomnum());			// í•´ë‹¹ ë°©ë²ˆí˜¸ë¡œ roomlistì˜ indexë¥¼ ë°›ì•„ì˜´ 
+		roomlist.get(i).playerlist.add(player);			// ë°©ì— ì…ì¥í•œ clientë¥¼ playerlistì— ì¶”ê°€
+		roomlist.get(i).updateCondition();				// ì¸ì› í˜•í™©ì„ ë³€ê²½
 
-		return roomlist.get(i).getCondition();			// ¹æÀÇ ÀÔÀå ÇöÈ²À» ¹İÈ¯
+		return roomlist.get(i).getCondition();			// ë°©ì˜ ì…ì¥ í˜„í™©ì„ ë°˜í™˜
 	}
 	
 	public String exitRoom(Client player)
 	{
-		int i = indexRoom(player.getRoomnum());			// ÇØ´ç ¹æ¹øÈ£·Î roomlistÀÇ index¸¦ ¹Ş¾Æ¿È 
-		roomlist.get(i).playerlist.remove(player);			// client¸¦ playerlist¿¡¼­ Á¦°Å
-		roomlist.get(i).updateCondition();				// ÀÎ¿ø ÇüÈ²À» º¯°æ
+		int i = indexRoom(player.getRoomnum());			// í•´ë‹¹ ë°©ë²ˆí˜¸ë¡œ roomlistì˜ indexë¥¼ ë°›ì•„ì˜´ 
+		roomlist.get(i).playerlist.remove(player);			// clientë¥¼ playerlistì—ì„œ ì œê±°
+		roomlist.get(i).updateCondition();				// ì¸ì› í˜•í™©ì„ ë³€ê²½
 
-		if(roomlist.get(i).getCondition().equals("null"))		//¸¸¾à ÀÔÀåÇöÈ²ÀÌ nullÀÌ¸é ¸®½ºÆ®¿¡¼­ ¹æÀ» Áö¿ò.
+		if(roomlist.get(i).getCondition().equals("null"))		//ë§Œì•½ ì…ì¥í˜„í™©ì´ nullì´ë©´ ë¦¬ìŠ¤íŠ¸ì—ì„œ ë°©ì„ ì§€ì›€.
 		{
 			roomlist.remove(i);
 			return "null";
 		}
-		return roomlist.get(i).getCondition();		// ¹æÀÇ ÀÔÀå ÇöÈ²À» ¹İÈ¯
+		return roomlist.get(i).getCondition();		// ë°©ì˜ ì…ì¥ í˜„í™©ì„ ë°˜í™˜
 	}
 	
 	public Vector<Room> getRoomlist()
@@ -60,7 +60,7 @@ public class RoomController
 	{
 		String result;
 		
-		tokenizer = new StringTokenizer(msg.substring(11),"\t"); 		// [Make Room] ¸¦ Á¦¿ÜÇÑ ¸Ş½ÃÁö¸¦ \t¸¦ ±âÁØÀ¸·Î ³ª´®
+		tokenizer = new StringTokenizer(msg.substring(11),"\t"); 		// [Make Room] ë¥¼ ì œì™¸í•œ ë©”ì‹œì§€ë¥¼ \të¥¼ ê¸°ì¤€ìœ¼ë¡œ ë‚˜ëˆ”
 		int i=0;
 
 		while(tokenizer.hasMoreTokens())
@@ -69,7 +69,7 @@ public class RoomController
 		}
 		roomnum++;
 		roomlist.add(new Room(player, roomnum+"",tokens[0],tokens[1]));
-		player.setRoomnum(roomnum);		//ClinetÀÇ ¹æ¹øÈ£¸¦ º¯°æÇÑ´Ù.
+		player.setRoomnum(roomnum);		//Clinetì˜ ë°©ë²ˆí˜¸ë¥¼ ë³€ê²½í•œë‹¤.
 		
 
 		result = roomlist.get(roomlist.size()-1).toString();
@@ -81,13 +81,13 @@ public class RoomController
 	public String nextTurn(int roomnum)
 	{
 		int i = indexRoom(roomnum);
-		return roomlist.get(i).nextTurn();	// ÇØ´ç ¹æÀÇ ´ÙÀ½ÅÏÀÇ ¾ÆÀÌµğ¸¦ ¹Ş¾Æ¿È
+		return roomlist.get(i).nextTurn();	// í•´ë‹¹ ë°©ì˜ ë‹¤ìŒí„´ì˜ ì•„ì´ë””ë¥¼ ë°›ì•„ì˜´
 	}
 	
 	public String getPlayerIDlist(int roomnum)
 	{
 		int i = indexRoom(roomnum);
-		return roomlist.get(i).getPlayerIDlist();	// ÇØ´ç ¹æÀÇ Á¤º¸¿Í ¸ğµç playerlistÀÇ »óÅÂ¸¦ ¹İÈ¯
+		return roomlist.get(i).getPlayerIDlist();	// í•´ë‹¹ ë°©ì˜ ì •ë³´ì™€ ëª¨ë“  playerlistì˜ ìƒíƒœë¥¼ ë°˜í™˜
 	}
 	public String getRoomNum(int roomnum)
 	{
@@ -118,7 +118,7 @@ public class RoomController
 	}
 	public String totalRoom()
 	{
-		// ¸¸µé¾îÁø ¸ğµç ¹æÀÇ Á¤º¸¸¦ ¹İÈ¯ÇÑ´Ù.
+		// ë§Œë“¤ì–´ì§„ ëª¨ë“  ë°©ì˜ ì •ë³´ë¥¼ ë°˜í™˜í•œë‹¤.
 		String result = "";
 		for(int i=0;i<roomlist.size();i++)
 		{

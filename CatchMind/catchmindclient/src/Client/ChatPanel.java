@@ -24,12 +24,12 @@ public class ChatPanel extends JPanel implements ActionListener
 	public ChatPanel()
 	{
 		this.setSize(new Dimension(WIDTH,HEIGHT));
-		this.setBorder(new TitledBorder(new EtchedBorder(),"Ã¤ÆÃ"));
+		this.setBorder(new TitledBorder(new EtchedBorder(),"ì±„íŒ…"));
 
-		chatarea = new TextArea(); 			// ¸Ş½ÃÁö¸¦ º¸¿©ÁÖ´Â ¿µ¿ª
+		chatarea = new TextArea(); 			// ë©”ì‹œì§€ë¥¼ ë³´ì—¬ì£¼ëŠ” ì˜ì—­
 		chatarea.setEditable(false);
 
-		inputmsg = new TextField();         // º¸³¾ ¸Ş½ÃÁö¸¦ ÀÔ·Â ÇÏ´Â field
+		inputmsg = new TextField();         // ë³´ë‚¼ ë©”ì‹œì§€ë¥¼ ì…ë ¥ í•˜ëŠ” field
 		inputmsg.addActionListener(this);
 
 		this.setLayout(null);

@@ -24,12 +24,12 @@ public class RoomMakeFrame extends JFrame implements  ActionListener
 	private int HEIGHT =300;
 	
 	
-	RoomPanel roompanel;		// ¹æ ¸ñ·ÏÀ» º¸°í ÀÔÀåÇÏ°Å³ª ¹æÀ» ¸¸µé ¼ö ÀÖ´Â ÆĞ³Î
-	ChatPanel chatpanel;		// Á¢¼ÓÇÑ client¿Í Ã¤ÆÃÀ» ÇÒ ¼ö ÀÖ´Â ÆĞ³Î
-	IDlistPanel idlistpanel;		// Á¢¼ÓÁßÀÎ ID¸¦ ¾Ë·ÁÁÖ´Â ÆĞ³Î
-	InformationPanel informationpanel;		// Á¤º¸ ¹× »óÅÂ¸¦ ¾Ë·Á ÁÖ´Â ÆĞ³Î
-	GamePanel gamepanel;		// °ÔÀÓÀ» ÁøÇàÇÏ´Â ÆĞ³Î
-	String state;//Ã¢¿©·¯°³ ¶ß´Â°É ¹æÁöÇÏ±âÀ§ÇØ....³ªÁß¿¡ ÀÚ¼¼È÷ ÄÚµù
+	RoomPanel roompanel;		// ë°© ëª©ë¡ì„ ë³´ê³  ì…ì¥í•˜ê±°ë‚˜ ë°©ì„ ë§Œë“¤ ìˆ˜ ìˆëŠ” íŒ¨ë„
+	ChatPanel chatpanel;		// ì ‘ì†í•œ clientì™€ ì±„íŒ…ì„ í•  ìˆ˜ ìˆëŠ” íŒ¨ë„
+	IDlistPanel idlistpanel;		// ì ‘ì†ì¤‘ì¸ IDë¥¼ ì•Œë ¤ì£¼ëŠ” íŒ¨ë„
+	InformationPanel informationpanel;		// ì •ë³´ ë° ìƒíƒœë¥¼ ì•Œë ¤ ì£¼ëŠ” íŒ¨ë„
+	GamePanel gamepanel;		// ê²Œì„ì„ ì§„í–‰í•˜ëŠ” íŒ¨ë„
+	String state;//ì°½ì—¬ëŸ¬ê°œ ëœ¨ëŠ”ê±¸ ë°©ì§€í•˜ê¸°ìœ„í•´....ë‚˜ì¤‘ì— ìì„¸íˆ ì½”ë”©
 
 	JComboBox selectNum;
 	DefaultComboBoxModel nummodel;
@@ -50,13 +50,13 @@ public class RoomMakeFrame extends JFrame implements  ActionListener
 		 String major[]={"3","4",
 					"5","6"};
 
-		this.setTitle("¹æ¸¸µé±â");
+		this.setTitle("ë°©ë§Œë“¤ê¸°");
 //		this.setSize(new Dimension(WIDTH,HEIGHT));
 		this.setSize(WIDTH,HEIGHT);
 		
 		
-		exit = new JButton("Ãë¼Ò");	
-		enter = new JButton("È®ÀÎ");	
+		exit = new JButton("ì·¨ì†Œ");	
+		enter = new JButton("í™•ì¸");	
 		
 	
 		
@@ -72,7 +72,7 @@ public class RoomMakeFrame extends JFrame implements  ActionListener
 		
 
 		nummodel = new DefaultComboBoxModel();
-		selectNum = new JComboBox(nummodel);		//ÀÎ¿ø¼ö ÄŞº¸
+		selectNum = new JComboBox(nummodel);		//ì¸ì›ìˆ˜ ì½¤ë³´
 		nummodel.addElement("3");
 		nummodel.addElement("4");
 		nummodel.addElement("5");
@@ -82,8 +82,8 @@ public class RoomMakeFrame extends JFrame implements  ActionListener
 		selectNum.addActionListener(this);	
 //		this.add( s2 );
 		InputLabel = new JLabel[2];
-		InputLabel[0] = new JLabel("¹æ ÀÌ ¸§  : ");
-		InputLabel[1] = new JLabel("ÀÎ     ¿ø  : ");
+		InputLabel[0] = new JLabel("ë°© ì´ ë¦„  : ");
+		InputLabel[1] = new JLabel("ì¸     ì›  : ");
 		exit.setBounds(200,125,95,30);
 		enter.setBounds(100,125,95,30);
 
@@ -119,26 +119,26 @@ public class RoomMakeFrame extends JFrame implements  ActionListener
 		// TODO Auto-generated method stub
 		if(event.getSource() == selectNum)
 		{  
-			num = (String)nummodel.getElementAt(selectNum.getSelectedIndex());	//ÀÎ¿ø ¼ö ÄŞº¸¹Ú½º ¸ğµ¨ÀÇ StringÀ» num ÀúÀå
-			System.out.println("¹æÀÎ¿ø:"+num);
+			num = (String)nummodel.getElementAt(selectNum.getSelectedIndex());	//ì¸ì› ìˆ˜ ì½¤ë³´ë°•ìŠ¤ ëª¨ë¸ì˜ Stringì„ num ì €ì¥
+			System.out.println("ë°©ì¸ì›:"+num);
 		}
 		if(event.getSource() == exit)
 		{
 			
 			this.setVisible(false);
-					// ¹è°æÀ½¾ÇÀ» ²û
+					// ë°°ê²½ìŒì•…ì„ ë”
 		}
 		else if(event.getSource() == enter){
 			if(Titletext.getText().equals(""))
 			{
-				JOptionPane.showMessageDialog(enter, "¹æÁ¦¸ñÀ» ÀÔ·ÂÇÏ¼¼¿ä",
+				JOptionPane.showMessageDialog(enter, "ë°©ì œëª©ì„ ì…ë ¥í•˜ì„¸ìš”",
 						"ID Error", JOptionPane.ERROR_MESSAGE);
 			}
 			else
 			{
 				
 				msg= "[MakeRoom] "+ Titletext.getText() + "\t" +num ;
-				System.out.println("¹æÀÎ¿ø:"+num);
+				System.out.println("ë°©ì¸ì›:"+num);
 				try {
 					CatchmindDriver.getDos().writeUTF(msg);
 					setVisible(false);

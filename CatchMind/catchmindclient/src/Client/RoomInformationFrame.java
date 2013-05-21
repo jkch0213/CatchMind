@@ -33,18 +33,18 @@ public class RoomInformationFrame extends JFrame implements  ActionListener
 		 this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
 	
 
-		this.setTitle("¹æÁ¤º¸");
+		this.setTitle("ë°©ì •ë³´");
 //		this.setSize(new Dimension(WIDTH,HEIGHT));
 //		this.setSize(WIDTH,HEIGHT);
 		
 		this.setLayout(null);
 		
-		roadInfo = new JButton("¹æÁ¤º¸ºÒ·¯¿À±â");
+		roadInfo = new JButton("ë°©ì •ë³´ë¶ˆëŸ¬ì˜¤ê¸°");
 		roadInfo.setBounds(100, 200, 200, 30);
 		roadInfo.addActionListener(this);
 		this.add(roadInfo);
-		exit = new JButton("Ãë¼Ò");	
-		join = new JButton("Âü¿©ÇÏ±â");
+		exit = new JButton("ì·¨ì†Œ");	
+		join = new JButton("ì°¸ì—¬í•˜ê¸°");
 		
 		
 		
@@ -70,9 +70,9 @@ public class RoomInformationFrame extends JFrame implements  ActionListener
 	 public void roadInfo()
 	 {
 		 InputLabel = new JLabel[7];
-			InputLabel[0] = new JLabel("[¹æ ÀÌ ¸§] ");
-			InputLabel[1] = new JLabel("[¹æ Á¦ ÇÑ ÀÎ ¿ø/Á¢ ¼Ó ÀÎ ¿ø] ");
-			InputLabel[2] = new JLabel("[¹æ Âü °¡ ÀÚ ]");
+			InputLabel[0] = new JLabel("[ë°© ì´ ë¦„] ");
+			InputLabel[1] = new JLabel("[ë°© ì œ í•œ ì¸ ì›/ì ‘ ì† ì¸ ì›] ");
+			InputLabel[2] = new JLabel("[ë°© ì°¸ ê°€ ì ]");
 			InputLabel[3] = new JLabel("-Introduce-");
 			InputLabel[4] = new JLabel(CatchmindDriver.getFrame().getTitle());
 			

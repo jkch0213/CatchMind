@@ -23,36 +23,36 @@ public class RoomPanel extends JPanel implements ActionListener{
 	JScrollPane roomscroll;
 	String data[][];
 	
-	JButton ready;		// °ÔÀÓ ÁØºñ
-	JButton cancel;		// ÁØºñ Ãë¼Ò
+	JButton ready;		// ê²Œì„ ì¤€ë¹„
+	JButton cancel;		// ì¤€ë¹„ ì·¨ì†Œ
 	
 	
-	TextArea idlistarea;		// ¹æ¿¡ ÀÖ´Â IDlist
+	TextArea idlistarea;		// ë°©ì— ìˆëŠ” IDlist
 	public RoomPanel()
 	{
 		this.setSize(new Dimension(WIDTH,HEIGHT));
-		this.setBorder(new TitledBorder(new EtchedBorder(),"¹æ¸ñ·Ï"));
+		this.setBorder(new TitledBorder(new EtchedBorder(),"ë°©ëª©ë¡"));
 		
-		String col[] = {"¹øÈ£","Á¦¸ñ","ÀÎ¿ø"};		//TableÀÇ column
+		String col[] = {"ë²ˆí˜¸","ì œëª©","ì¸ì›"};		//Tableì˜ column
 
 		tmodel = new DefaultTableModel(data,col)
 		{
 			public boolean isCellEditable(int r, int c)
 			{
-				return false;			//TableÀÇ CellÀ» ¼öÁ¤ ºÒ°¡´É ÇÏµµ·Ï ÇÔ
+				return false;			//Tableì˜ Cellì„ ìˆ˜ì • ë¶ˆê°€ëŠ¥ í•˜ë„ë¡ í•¨
 			}
 		};
 		
 
 		roomtable = new JTable(tmodel);
-		roomscroll = new JScrollPane(roomtable); 	// Å×ÀÌºí ¼³Á¤
+		roomscroll = new JScrollPane(roomtable); 	// í…Œì´ë¸” ì„¤ì •
 
 		roomtable.getColumnModel().getColumn(0).setPreferredWidth(20);
 		roomtable.getColumnModel().getColumn(1).setPreferredWidth(150);
 		roomtable.getColumnModel().getColumn(2).setPreferredWidth(40);
-		// Å×ÀÌºí Ä®·´ Å©±â Á¶Á¤
-		roomtable.getTableHeader().setReorderingAllowed(false);			//Å×ÀÌºí ÄÃ·³ÀÇ ÀÌµ¿À» ¹æÁö
-		roomtable.getTableHeader().setResizingAllowed(false);		// Å×ÀÌºí ÄÃ·³ÀÇ »çÀÌÁî¸¦ °íÁ¤
+		// í…Œì´ë¸” ì¹¼ëŸ½ í¬ê¸° ì¡°ì •
+		roomtable.getTableHeader().setReorderingAllowed(false);			//í…Œì´ë¸” ì»¬ëŸ¼ì˜ ì´ë™ì„ ë°©ì§€
+		roomtable.getTableHeader().setResizingAllowed(false);		// í…Œì´ë¸” ì»¬ëŸ¼ì˜ ì‚¬ì´ì¦ˆë¥¼ ê³ ì •
 		roomtable.getColumnSelectionAllowed();
 		roomscroll.setBounds(20, 20, 450, 250);
 		this.add(roomscroll);

@@ -4,20 +4,20 @@ import java.util.Vector;
 
 public class Room 
 {
-	private String number;		// ¹æ¹øÈ£
-	private String title;		// ¹æÁ¦¸ñ
-	private String max;			// ¹æ¿¡ µé¾î¿Ã ¼ö ÀÖ´Â ÃÑ ÀÎ¿ø ¼ö
+	private String number;		// ë°©ë²ˆí˜¸
+	private String title;		// ë°©ì œëª©
+	private String max;			// ë°©ì— ë“¤ì–´ì˜¬ ìˆ˜ ìˆëŠ” ì´ ì¸ì› ìˆ˜
 	
-	private String condition;		// ¹æ¿¡ ÀÔÀå ÇÑ ÀÎ¿ø / ÃÑ ÀÎ¿ø ÇüÅÂÀÇ String
+	private String condition;		// ë°©ì— ì…ì¥ í•œ ì¸ì› / ì´ ì¸ì› í˜•íƒœì˜ String
 
-	protected Vector<Client> playerlist;		// ¹æ¿¡ ÀÔÀåÇÑ clientµé
+	protected Vector<Client> playerlist;		// ë°©ì— ì…ì¥í•œ clientë“¤
 
-	private int count;			// ÅÏÀ» À§ÇØ °è¼Ó count
+	private int count;			// í„´ì„ ìœ„í•´ ê³„ì† count
 
 	public Room(Client player, String number, String title, String max)
 	{
 		playerlist = new Vector<Client>();
-		playerlist.add(player);		//¹æ¿¡ ÀÔÀåÇÑ client¸¦ list¿¡ Ãß°¡ÇÑ´Ù.
+		playerlist.add(player);		//ë°©ì— ì…ì¥í•œ clientë¥¼ listì— ì¶”ê°€í•œë‹¤.
 
 		this.number = number;
 		this.title = title;
@@ -39,9 +39,9 @@ public class Room
 	}
 	public void updateCondition()
 	{
-		if (playerlist.size() == Integer.parseInt(max)) this.condition = "Full";	// ¹æ¿¡ ÀÔÀåÇÑ ¼ö°¡ max°ª°ú °°À¸¸é Full·Î ³ªÅ¸³¿
-		else if (playerlist.size() == 0) this.condition = "null";		// ¹æ¿¡¼­ ¸ğµÎ ÅğÀåÇÏ¸é null·Î Ç¥½Ã
-		else this.condition = playerlist.size() + " / " + max;		// max°ªÀ» ³ÑÁö ¾ÊÀ¸¸é ÀÔÀåÇÑ ¼ö / max·Î ³ªÅ¸³¿
+		if (playerlist.size() == Integer.parseInt(max)) this.condition = "Full";	// ë°©ì— ì…ì¥í•œ ìˆ˜ê°€ maxê°’ê³¼ ê°™ìœ¼ë©´ Fullë¡œ ë‚˜íƒ€ëƒ„
+		else if (playerlist.size() == 0) this.condition = "null";		// ë°©ì—ì„œ ëª¨ë‘ í‡´ì¥í•˜ë©´ nullë¡œ í‘œì‹œ
+		else this.condition = playerlist.size() + " / " + max;		// maxê°’ì„ ë„˜ì§€ ì•Šìœ¼ë©´ ì…ì¥í•œ ìˆ˜ / maxë¡œ ë‚˜íƒ€ëƒ„
 	}
 	public String getCondition()
 	{
@@ -50,15 +50,15 @@ public class Room
 
 	
 	
-	public String getPlayerIDlist()		// ¹æÀÇ Á¤º¸¿Í ¸ğµç playerlistÀÇ »óÅÂ¸¦ ¹İÈ¯
+	public String getPlayerIDlist()		// ë°©ì˜ ì •ë³´ì™€ ëª¨ë“  playerlistì˜ ìƒíƒœë¥¼ ë°˜í™˜
 	{
-		String result = number +"  ¹æ : " + title + "\n";
+		String result = number +"  ë°© : " + title + "\n";
 		
-		result += "Á¦ÇÑ ÀÎ¿ø : " + max+"  ("+playerlist.size()+"¸í ÀÔÀå)"+ "\n\n";
+		result += "ì œí•œ ì¸ì› : " + max+"  ("+playerlist.size()+"ëª… ì…ì¥)"+ "\n\n";
 
 		for(int i=0;i<playerlist.size();i++)
 		{
-//			result += playerlist.get(i).getID()+ " / " +playerlist.get(i).team +"ÆÀ / "+playerlist.get(i).state+"\n";
+//			result += playerlist.get(i).getID()+ " / " +playerlist.get(i).team +"íŒ€ / "+playerlist.get(i).state+"\n";
 		}
 		return result;
 	}
@@ -78,7 +78,7 @@ public class Room
 	public String getRoomPeopleCount()
 	{
 		String result = "";
-		result+=max+"  /"+playerlist.size()+"¸í ÀÔÀå";
+		result+=max+"  /"+playerlist.size()+"ëª… ì…ì¥";
 		return result;
 	}
 
@@ -87,17 +87,17 @@ public class Room
     	String result ="";
     	for(int i=0;i<playerlist.size();i++)
 		{
-			result += playerlist.get(i).getGameId()+ "/";
+			result += playerlist.get(i).getId()+ "/";
 		}
     	return result;
     }
 
 
-	public String nextTurn()		// ´ÙÀ½ ÅÏÀÇ player ID¸¦ ¹İÈ¯
+	public String nextTurn()		// ë‹¤ìŒ í„´ì˜ player IDë¥¼ ë°˜í™˜
 	{
-		int turn = count % playerlist.size();		// ÅÏÀº count¸¦ playerlist¼ö¸¸Å­ ³ª´« ³ª¸ÓÁö·Î °è»ê
+		int turn = count % playerlist.size();		// í„´ì€ countë¥¼ playerlistìˆ˜ë§Œí¼ ë‚˜ëˆˆ ë‚˜ë¨¸ì§€ë¡œ ê³„ì‚°
 		count++;
 
-		return playerlist.get(turn).getID();		// ÇØ´ç ÅÏÀÇ ID¸¦ ¹İÈ¯
+		return playerlist.get(turn).getID();		// í•´ë‹¹ í„´ì˜ IDë¥¼ ë°˜í™˜
 	}
 }

@@ -9,11 +9,13 @@ import Client.CatchmindDriver;
 import Client.CatchmindFrame;
 
 public class LoginPanel extends JPanel implements ActionListener {
+	public static Component loginPanel;
+
 	SignUpFrame signUp;
 
 	private int WIDTH = 380;
 	private int HEIGHT = 180;
-	private boolean LoginCheck = false; // ·Î±×ÀÎµÇ¾îÀÖ´ÂÁö È®ÀÎÇÏ´Â º¯¼ö
+	private boolean LoginCheck = false; // ë¡œê·¸ì¸ë˜ì–´ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” ë³€ìˆ˜
 
 	FindIDFrame findIDFrame;
 	FindPassFrame findPassFrame;
@@ -40,8 +42,8 @@ public class LoginPanel extends JPanel implements ActionListener {
 		IDText = new TextField(20);
 		PasswordText = new TextField(20);
 		Login = new JButton("Login");
-		ForgotID = new JButton("ID Ã£±â");
-		ForgotPS = new JButton("ºñ¹Ğ¹øÈ£ Ã£±â");
+		ForgotID = new JButton("ID ì°¾ê¸°");
+		ForgotPS = new JButton("ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°");
 		SignUp = new JButton("SignUp");
 		exit = new JButton("Exit");
 		findIDFrame = new FindIDFrame();
@@ -67,7 +69,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		this.add(SignUp);
 		this.add(exit);
 
-		// ActionListener »ı¼º
+		// ActionListener ìƒì„±
 		SignUp.addActionListener(this);
 		Login.addActionListener(this);
 		exit.addActionListener(this);
@@ -82,45 +84,44 @@ public class LoginPanel extends JPanel implements ActionListener {
 
 		if (event == SignUp) {
 			signUp.setVisible(true);
-		} else if (event == ForgotID) {	// ¾ÆÀÌµğ Ã£±â¸¦ Å¬¸¯ ÇßÀ» ¶§
-			//¾ÆÀÌµğ Ã£±â ÆĞ³Î º¸¿©ÁÜ
+		} else if (event == ForgotID) {	// ì•„ì´ë”” ì°¾ê¸°ë¥¼ í´ë¦­ í–ˆì„ ë•Œ
+			//ì•„ì´ë”” ì°¾ê¸° íŒ¨ë„ ë³´ì—¬ì¤Œ
 			findIDFrame.setVisible(true);
-		} else if (event == ForgotPS) {	// ºñ¹Ğ¹øÈ£ Ã£±â¸¦ Å¬¸¯ ÇßÀ» ¶§
-			//ºñ¹Ğ¹øÈ£ Ã£±â ÆĞ³Î º¸¿©ÁÜ
+		} else if (event == ForgotPS) {	// ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°ë¥¼ í´ë¦­ í–ˆì„ ë•Œ
+			//ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸° íŒ¨ë„ ë³´ì—¬ì¤Œ
 			findPassFrame.setVisible(true);
 		} else if (event == Login) {
 			String ID = IDText.getText().trim();
 			String PW = PasswordText.getText().trim();
 			if (ID.length() == 0 || ID == null) {
-				JOptionPane.showMessageDialog(Login, "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ¼¼¿ä", "ID Error",
+				JOptionPane.showMessageDialog(Login, "ì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì„¸ìš”", "ID Error",
 						JOptionPane.ERROR_MESSAGE);
 			} else if (PW.length() == 0 || PW == null) {
-				JOptionPane.showMessageDialog(Login, "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä",
+				JOptionPane.showMessageDialog(Login, "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”",
 						"Password Error", JOptionPane.ERROR_MESSAGE);
 			} else {
 				try {
-					CatchmindDriver.getDos().writeUTF("[login] " + ID);
-					CatchmindDriver.getDos().writeUTF("[login] " + PW);
+					CatchmindDriver.getDos().writeUTF("[Login] " + ID + "\t" + PW);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 
-			// DB·Î ID,Password È®ÀÎÇÏ´Â ÀÛ¾÷
-			// DB°¡ ¿Ï¼ºµÉ¶§±îÁö ÀÓ½Ã·Î ¾Æ¹«°ª¸¸ ³ÖÀ¸¸é ·Î±×ÀÎ
+			// DBë¡œ ID,Password í™•ì¸í•˜ëŠ” ì‘ì—…
+			// DBê°€ ì™„ì„±ë ë•Œê¹Œì§€ ì„ì‹œë¡œ ì•„ë¬´ê°’ë§Œ ë„£ìœ¼ë©´ ë¡œê·¸ì¸
 
 		}
 
 		if (event == exit) {
 			try {
-				CatchmindDriver.exit(); // ¼­¹ö¿Í Á¢¼ÓÀ» ÇØÁöÇÔ : ¸ŞÀÎÇÔ¼öÀÇ socket, dis, dos¸¦
+				CatchmindDriver.exit(); // ì„œë²„ì™€ ì ‘ì†ì„ í•´ì§€í•¨ : ë©”ì¸í•¨ìˆ˜ì˜ socket, dis, dosë¥¼
 										// close
 			} catch (IOException ea) {
 				ea.printStackTrace();
 			}
-			CatchmindDriver.getFrame().setVisible(false); // Á¾·á ¹öÆ°À» ´©¸£¸é ÇÁ·¹ÀÓÀ» ´İÀ½
-			// SoundEffect.BGM.stop(); // ¹è°æÀ½¾ÇÀ» ²û
+			CatchmindDriver.getFrame().setVisible(false); // ì¢…ë£Œ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ í”„ë ˆì„ì„ ë‹«ìŒ
+			// SoundEffect.BGM.stop(); // ë°°ê²½ìŒì•…ì„ ë”
 
 		}
 	}

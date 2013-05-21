@@ -1,11 +1,13 @@
 package Server;
 import java.io.*;
 import java.net.*;
+import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.print.attribute.standard.Severity;
-import DBController.LoginController;
+import DBController.Login;
 
 class Client extends Thread 
 {
@@ -13,35 +15,39 @@ class Client extends Thread
 	protected Socket socket;
 	protected DataInputStream dis;
 	protected DataOutputStream dos;
-	private String id;				// client id´Â "user1,user2,...(Á¢¼Ó¼ø¼­)" ÀÌ´Ù.
-	private int roomnum;			// ¹æ¹øÈ£¸¦ ³ªÅ¸³»´Â º¯¼ö ÃÊ±â°ª -1(´ë±â½Ç)
-	private String gameId;
-	/* 2013.05.17 Modified */
+	protected String id;				// client idëŠ” "user1,user2,...(ì ‘ì†ìˆœì„œ)" ì´ë‹¤.
 	protected String pass;
 	protected String name;
 	protected String reginum;
-	/* 2013.05.17 Modified */
+	private int roomnum;			// ë°©ë²ˆí˜¸ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ë³€ìˆ˜ ì´ˆê¸°ê°’ -1(ëŒ€ê¸°ì‹¤)
+	private String gameId;
+	private String ReValue;
 	
-	String state;					// ÁØºñÁßÀÎÁö ÇöÀç »óÅÂ¸¦ ³ªÅ¸³¿
+	Login loginController;
+	StringTokenizer tokenizer1;
+	String[] user = new String[10];
 	
-	public Client(Server svr, Socket s) throws IOException
+	String state;					// ì¤€ë¹„ì¤‘ì¸ì§€ í˜„ì¬ ìƒíƒœë¥¼ ë‚˜íƒ€ëƒ„
+	
+	public Client(Server svr, Socket s) throws IOException, SQLException
 	{
 		this.svr = svr;
 		this.socket = s;
 		dis = new DataInputStream(socket.getInputStream());
 		dos = new DataOutputStream(socket.getOutputStream());
 
-		this.id = this.socket.getInetAddress()+"_"+svr.getCount();	//client id´Â "ipÁÖ¼Ò_Á¢¼Ó ¼ø¼­" ÀÌ´Ù.
+		this.id = this.socket.getInetAddress()+"_"+svr.getCount();	//client idëŠ” "ipì£¼ì†Œ_ì ‘ì† ìˆœì„œ" ì´ë‹¤.
 		this.id = "user"+svr.getCount();
 		roomnum = -1;
 
-		state = "";		// °ÔÀÓ ½ÃÀÛÀ» ÁØºñÇÏÁö ¾ÊÀº »óÅÂ
+		state = "";		// ê²Œì„ ì‹œì‘ì„ ì¤€ë¹„í•˜ì§€ ì•Šì€ ìƒíƒœ
+		loginController = new Login();
 		
 		try {
-			dos.writeUTF("[ShowID]"+ id);	//Á¢¼ÓÇÑ client¿¡°Ô ID¸¦ Àü¼Û
+			dos.writeUTF("[ShowID]"+ id);	//ì ‘ì†í•œ clientì—ê²Œ IDë¥¼ ì „ì†¡
 			
 			
-			dos.writeUTF("[Information] "+ id + " ´Ô Á¢¼ÓÀ» È¯¿µÇÕ´Ï´Ù.");	//Á¢¼ÓÇÑ client¿¡°Ô ID¿Í Á¢¼Û Á¤º¸¸¦ º¸³¿
+			dos.writeUTF("[Information] "+ id + " ë‹˜ ì ‘ì†ì„ í™˜ì˜í•©ë‹ˆë‹¤.");	//ì ‘ì†í•œ clientì—ê²Œ IDì™€ ì ‘ì†¡ ì •ë³´ë¥¼ ë³´ëƒ„
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -68,11 +74,11 @@ class Client extends Thread
 		return dos;
 	}
 	
-	public void sendToMe(String msg)		// this Å¬·¡½º¿Í Åë½ÅÇÏ°í ÀÖ´Â client¿¡°Ô º¸³¿
+	public void sendToMe(String msg)		// this í´ë˜ìŠ¤ì™€ í†µì‹ í•˜ê³  ìˆëŠ” clientì—ê²Œ ë³´ëƒ„
 	{
 		try {
 			this.dos.writeUTF(msg+" ");
-			System.out.println(msg+"x");
+			System.out.println(msg+" send to Client");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -80,72 +86,140 @@ class Client extends Thread
 
 	public void run() {
 		String msg = null;
-
+		
 		try {   
 			while(true)
 			{
 				msg = dis.readUTF();   
 				System.out.println(id+" ("+ this.socket.getInetAddress() + ") " + msg);
 
-				if(msg.startsWith("[Chat] ")) 	//[Chat] À¸·Î ½ÃÀÛÇÏ´Â ¸Ş½ÃÁö¸é °°Àº ¹æ¿¡ÀÖ´Â »ç¶÷°ú Ã¤ÆÃ (´ë±â½ÇÀº ¹æ¹øÈ£°¡ -1)
+				if(msg.startsWith("[Chat] ")) 	//[Chat] ìœ¼ë¡œ ì‹œì‘í•˜ëŠ” ë©”ì‹œì§€ë©´ ê°™ì€ ë°©ì—ìˆëŠ” ì‚¬ëŒê³¼ ì±„íŒ… (ëŒ€ê¸°ì‹¤ì€ ë°©ë²ˆí˜¸ê°€ -1)
 				{
 					svr.clientcontroller.sendToRoom(roomnum, "[Chat] [ " + gameId + " ] : " + msg.substring(7));
-						//[Chat] À» Á¦¿ÜÇÑ id + ¸Ş½ÃÁö¸¦ Ã¤ÆÃÃ¢¿¡ º¸³¿
+						//[Chat] ì„ ì œì™¸í•œ id + ë©”ì‹œì§€ë¥¼ ì±„íŒ…ì°½ì— ë³´ëƒ„
 				}
-				else if(msg.startsWith("[login] "))
+				else if(msg.startsWith("[Login] "))
 				{
-					setGameId(msg.substring(8));
-					msg="[login] "+id;
-					sendToMe(msg);
-					dos.writeUTF("[Roomlist]"+ svr.roomcontroller.totalRoom());	//roomlist¿¡ ¸ğµç Room°´Ã¼ ÀÇ Á¤º¸¸¦ ¹Ş¾Æ¼­ Á¢¼ÓÇÑ client¿¡ º¸³¿
-					svr.clientcontroller.updateIDlist();
+					tokenizer1 = new StringTokenizer(msg.substring(8),"\t");
+					int i=0;
+					while(tokenizer1.hasMoreTokens()){
+						user[i] = tokenizer1.nextToken();
+						i++;
+					}
+					id = user[0];
+					pass = user[1];
+					ReValue = Login.Login(id,pass); 
+					
+					if(ReValue.equals("true")){
+						msg="[Login]" + id;
+						sendToMe(msg);
+						dos.writeUTF("[Roomlist]"+ svr.roomcontroller.totalRoom());	//roomlistì— ëª¨ë“  Roomê°ì²´ ì˜ ì •ë³´ë¥¼ ë°›ì•„ì„œ ì ‘ì†í•œ clientì— ë³´ëƒ„
+						svr.clientcontroller.updateIDlist();
+					}
+					if(ReValue.equals("false")){
+						msg="[LoginFail]";
+						sendToMe(msg);
+					}
 				}
 				/*** 13.05.17 Modified ***/
-				else if(msg.startsWith("[loginIDCheck] ")){
+				else if(msg.startsWith("[LoginIDCheck] ")){
 					id = msg.substring(15); 
-					LoginController.IDCheck(id);
-				}
-				else if(msg.startsWith("[loginFindID] ")){
-					name = msg.substring(14);
-					reginum = msg.substring(14);
-				}
-				else if(msg.startsWith("[loginFindPass] ")){
-					name = msg.substring(16);
-					id = msg.substring(16);
-					reginum = msg.substring(16);
-				}
-				else if(msg.startsWith("[loginSignUp] ")){
-					name = msg.substring(14);
-					id = msg.substring(14);
-					pass = msg.substring(14);
-					reginum = msg.substring(14);
+					ReValue = Login.IDCheck(id);
 					
+					if(ReValue.equals("true")){
+						msg = "[LoginIDCheck]true";
+						sendToMe(msg);
+					}else{
+						msg = "[LoginIDCheck]false";
+						sendToMe(msg);
+					}
+				}
+				else if(msg.startsWith("[LoginFindID] ")){
+					tokenizer1 = new StringTokenizer(msg.substring(14),"\t");
+					int i=0;
+					while(tokenizer1.hasMoreTokens()){
+						user[i] = tokenizer1.nextToken();
+						i++;
+					}
+					
+					System.out.println(user[0] + user[1]);
+					name = user[0];
+					reginum = user[1];
+					ReValue = Login.FindID(name,reginum);
+					
+					if(!ReValue.equals(null)){
+						msg = "[LoginFindID]" + ReValue;
+						sendToMe(msg);
+					}else{
+						msg = "[LoginFindID]";
+						sendToMe(msg);
+					}
+				}
+				else if(msg.startsWith("[LoginFindPass] ")){
+					tokenizer1 = new StringTokenizer(msg.substring(16),"\t");
+					int i=0;
+					while(tokenizer1.hasMoreTokens()){
+						user[i] = tokenizer1.nextToken();
+						i++;
+					}
+					name = user[0];
+					id = user[1];
+					reginum = user[2];
+					ReValue = Login.FindPass(name,id,reginum);
+					if(!ReValue.equals(null)){
+						msg = "[LoginFindPass]" + ReValue;
+						sendToMe(msg);
+					}else{
+						msg = "[LoginFindPass]";
+						sendToMe(msg);
+					}
+				}
+				else if(msg.startsWith("[LoginSignUp] ")){
+					tokenizer1 = new StringTokenizer(msg.substring(14),"\t");
+					int i=0;
+					while(tokenizer1.hasMoreTokens()){
+						user[i] = tokenizer1.nextToken();
+						i++;
+					}
+					name = user[0];
+					id = user[1];
+					pass = user[2];
+					reginum = user[3];
+					// í…ŒìŠ¤íŠ¸
+					System.out.println(name + id + pass + reginum);
+					
+					ReValue = Login.SignUp(name,id,pass,reginum);
+					
+					if(!ReValue.equals("true")){
+						msg = "[LoginSignUp]";
+						sendToMe(msg);
+					}
 				}
 				/*** 13.05.17 Modified ***/
 				else if(msg.startsWith("[MakeRoom] "))
 				{
 					
 					
-					msg = "[MakeRoom]" + svr.getRoomController().makeRoom(this,msg); 	//RoomCotroller¸¦ ÅëÇØ Room°´Ã¼¸¦ ¸¸µë
+					msg = "[MakeRoom]" + svr.getRoomController().makeRoom(this,msg); 	//RoomCotrollerë¥¼ í†µí•´ Roomê°ì²´ë¥¼ ë§Œë“¬
 					sendToMe("[MadeRoom] "+id);
-					svr.clientcontroller.sendToAll(msg);	//¸¸µç Room°´Ã¼ÀÇ Á¤º¸¸¦ ¸ğµç client¿¡°Ô º¸³¿
+					svr.clientcontroller.sendToAll(msg);	//ë§Œë“  Roomê°ì²´ì˜ ì •ë³´ë¥¼ ëª¨ë“  clientì—ê²Œ ë³´ëƒ„
 				    svr.clientcontroller.sendToAll("[RoomSize]"+svr.getRoomController().RoomSize());
-					msg = svr.roomcontroller.getPlayerIDlist(roomnum);		// ¹æÀÇ IDlist¸¦ ¾÷µ¥ÀÌÆ®
+					msg = svr.roomcontroller.getPlayerIDlist(roomnum);		// ë°©ì˜ IDlistë¥¼ ì—…ë°ì´íŠ¸
 					svr.clientcontroller.sendToAll("[Roomlist]"+ svr.roomcontroller.totalRoom());
 //					sendToMe("[PlayerIDlist] "+ msg);
-//					sendToMe("[Information] "+ roomnum + "¹ø ¹æÀ» ¸¸µé¾ú½À´Ï´Ù.");
+//					sendToMe("[Information] "+ roomnum + "ë²ˆ ë°©ì„ ë§Œë“¤ì—ˆìŠµë‹ˆë‹¤.");
 				}
 				else if(msg.startsWith("[EnterRoom] "))
 				{
-					this.roomnum = Integer.parseInt(msg.substring(12));		// ¹æ¹øÈ£¸¦ ÀÔÀåÇÑ ¹æ¹øÈ£·Î º¯°æ
-					msg += "\t"+svr.getRoomController().enterRoom(this);	// client¸¦ ÀÔÀåÇÑ ¹æÀÇ playerlist¿¡ Ãß°¡
-					svr.clientcontroller.sendToAll(msg);	// ¹æ¿¡ ÀÔÀåÇÏ¿© º¯°æµÈ ¹æÀÇ Á¤º¸¸¦ ¸ğµç client¿¡°Ô º¸³¿
+					this.roomnum = Integer.parseInt(msg.substring(12));		// ë°©ë²ˆí˜¸ë¥¼ ì…ì¥í•œ ë°©ë²ˆí˜¸ë¡œ ë³€ê²½
+					msg += "\t"+svr.getRoomController().enterRoom(this);	// clientë¥¼ ì…ì¥í•œ ë°©ì˜ playerlistì— ì¶”ê°€
+					svr.clientcontroller.sendToAll(msg);	// ë°©ì— ì…ì¥í•˜ì—¬ ë³€ê²½ëœ ë°©ì˜ ì •ë³´ë¥¼ ëª¨ë“  clientì—ê²Œ ë³´ëƒ„
 					
 					msg="[SetGamePanel]";
 					sendToMe(msg);
-					//msg = svr.roomcontroller.getPlayerIDlist(roomnum);		// ³»°¡ ÀÔÀåÇÏ¿© º¯°æµÈ IDlist¸¦ ¾÷µ¥ÀÌÆ®
+					//msg = svr.roomcontroller.getPlayerIDlist(roomnum);		// ë‚´ê°€ ì…ì¥í•˜ì—¬ ë³€ê²½ëœ IDlistë¥¼ ì—…ë°ì´íŠ¸
 				//	svr.clientcontroller.sendToRoom(roomnum,"[PlayerIDlist] "+ msg);	
-				//	sendToMe("[Information] "+roomnum+"¹ø ¹æÀ» ÀÔÀå ÇÏ¿´½À´Ï´Ù.");
+				//	sendToMe("[Information] "+roomnum+"ë²ˆ ë°©ì„ ì…ì¥ í•˜ì˜€ìŠµë‹ˆë‹¤.");
 				}
 				else if(msg.startsWith("[RequestInfor]"))
 				{
@@ -164,17 +238,14 @@ class Client extends Thread
 				{
 					sendToMe(msg);
 				}
-
-				
-				
 			}
-		} catch (IOException ex) { 
-			System.out.println(id+" ("+ this.socket.getInetAddress() + ") " + "Á¢¼Ó ÇØÁö");
+		} catch (IOException | SQLException ex) { 
+			System.out.println(id+" ("+ this.socket.getInetAddress() + ") " + "ì ‘ì† í•´ì§€");
 		}
 		finally {
-			svr.clientcontroller.clientlist.removeElement(this);	// Á¢¼Ó ÇØÁ¦ÇÑ this Client¸¦ list¿¡¼­ Á¦°Å
-			System.out.println("ÇöÀç Á¢¼ÓÀÚ ¼ö: "+svr.clientcontroller.getClientlist().size());
-			svr.clientcontroller.updateIDlist();	// Á¢¼ÓÇÑ ¸ğµç client¿¡°Ô Á¢¼Ó ÇØÁ¦ client ID¸¦ Á¦¿ÜÇÑ IDlist°á°ú¸¦ ¾÷µ¥ÀÌÆ®
+			svr.clientcontroller.clientlist.removeElement(this);	// ì ‘ì† í•´ì œí•œ this Clientë¥¼ listì—ì„œ ì œê±°
+			System.out.println("í˜„ì¬ ì ‘ì†ì ìˆ˜: "+svr.clientcontroller.getClientlist().size());
+			svr.clientcontroller.updateIDlist();	// ì ‘ì†í•œ ëª¨ë“  clientì—ê²Œ ì ‘ì† í•´ì œ client IDë¥¼ ì œì™¸í•œ IDlistê²°ê³¼ë¥¼ ì—…ë°ì´íŠ¸
 
 			try {
 				dis.close();
@@ -182,15 +253,9 @@ class Client extends Thread
 				socket.close();
 			} catch (IOException e) { e.printStackTrace(); }
 		}  
-
 	}
 
-	public String getGameId() {
-		return gameId;
+	public void setId(String id) {
+		this.id = id;
 	}
-
-	public void setGameId(String gameId) {
-		this.gameId = gameId;
-	}
-
 }

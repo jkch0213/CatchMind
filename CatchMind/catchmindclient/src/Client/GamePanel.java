@@ -23,11 +23,11 @@ public class GamePanel extends JPanel implements ActionListener
 	private int WIDTH = 750;
 	private int HEIGHT = 280;
 	
-	JButton ready;		// °ÔÀÓ ÁØºñ
-	JButton cancel;		// ÁØºñ Ãë¼Ò
+	JButton ready;		// ê²Œì„ ì¤€ë¹„
+	JButton cancel;		// ì¤€ë¹„ ì·¨ì†Œ
 	
 	
-	TextArea idlistarea;		// ¹æ¿¡ ÀÖ´Â IDlist
+	TextArea idlistarea;		// ë°©ì— ìˆëŠ” IDlist
 	public GamePanel()
 	{
 	

@@ -22,8 +22,8 @@ public class CatchmindDriver
 	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub
-		serverip= "localhost";			//¼­¹öÀÇ ÁÖ¼Ò
-		port = 5555;					//Åë½ÅÇÒ Æ÷Æ® ¹øÈ£		
+		serverip= "localhost";			//ì„œë²„ì˜ ì£¼ì†Œ
+		port = 5555;					//í†µì‹ í•  í¬íŠ¸ ë²ˆí˜¸		
 
 		try {
 			socket = new Socket(CatchmindDriver.getServerIp(), CatchmindDriver.getPort());
@@ -38,7 +38,7 @@ public class CatchmindDriver
 			
 
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "¼­¹ö ¿¬°á ½ÇÆĞ (IP¿Í Æ÷Æ®¸¦ È®ÀÎÇØÁÖ¼¼¿ä.)");
+			JOptionPane.showMessageDialog(null, "ì„œë²„ ì—°ê²° ì‹¤íŒ¨ (IPì™€ í¬íŠ¸ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”.)");
 		}
 
 	}
@@ -53,7 +53,6 @@ public class CatchmindDriver
 	{
 		return serverip;
 	}
-
 	public static int getPort()
 	{
 		return port;
@@ -63,7 +62,7 @@ public class CatchmindDriver
 	{
 		return socket;
 	}
-
+	
 	public static DataInputStream getDis()
 	{
 		return dis;

@@ -19,9 +19,9 @@ public class IDlistPanel extends JPanel
 	{
 
 		this.setSize(new Dimension(WIDTH,HEIGHT));
-		this.setBorder(new TitledBorder(new EtchedBorder(),"Á¢¼ÓID"));
+		this.setBorder(new TitledBorder(new EtchedBorder(),"ì ‘ì†ID"));
 
-		idlistarea = new TextArea(); 			// ¸Ş½ÃÁö¸¦ º¸¿©ÁÖ´Â ¿µ¿ª
+		idlistarea = new TextArea(); 			// ë©”ì‹œì§€ë¥¼ ë³´ì—¬ì£¼ëŠ” ì˜ì—­
 		idlistarea.setEditable(false);
 
 		this.setLayout(null);

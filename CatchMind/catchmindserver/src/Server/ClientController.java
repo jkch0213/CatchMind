@@ -17,7 +17,7 @@ public class ClientController
 		return clientlist;
 	}
 
-	public void sendTo(int i, String msg)		// ÇØ´ç Client ¿¡°Ô ¸Ş½ÃÁö¸¦ Àü¼Û
+	public void sendTo(int i, String msg)		// í•´ë‹¹ Client ì—ê²Œ ë©”ì‹œì§€ë¥¼ ì „ì†¡
 	{
 		try {
 			clientlist.get(i).getDos().writeUTF(msg);
@@ -26,7 +26,7 @@ public class ClientController
 		}
 	}
 	
-	public void sendToAll(String msg)		// Á¢¼ÓÇÑ ¸ğµç Client ¿¡°Ô ¸Ş½ÃÁö¸¦ Àü¼Û
+	public void sendToAll(String msg)		// ì ‘ì†í•œ ëª¨ë“  Client ì—ê²Œ ë©”ì‹œì§€ë¥¼ ì „ì†¡
 	{
 		for(int i=0;i<clientlist.size();i++)
 		{
@@ -34,7 +34,7 @@ public class ClientController
 		}
 	}
 	
-	public void sendToRoom(int roomnum, String msg)		// °°Àº ¹æ¿¡ ÀÖ´Â »ç¶÷°ú Ã¤ÆÃ (Ã¤³ÎÀº ¹æ¹øÈ£°¡ -1)
+	public void sendToRoom(int roomnum, String msg)		// ê°™ì€ ë°©ì— ìˆëŠ” ì‚¬ëŒê³¼ ì±„íŒ… (ì±„ë„ì€ ë°©ë²ˆí˜¸ê°€ -1)
 	{
 		for(int i=0;i<clientlist.size();i++)
 		{
@@ -45,7 +45,7 @@ public class ClientController
 		}
 	}
 	
-	public void sendToEnemy(int roomnum, String msg)		// °°Àº ¹æ¿¡ ÀÖ´Â »ç¶÷°ú Ã¤ÆÃ (Ã¤³ÎÀº ¹æ¹øÈ£°¡ -1)
+	public void sendToEnemy(int roomnum, String msg)		// ê°™ì€ ë°©ì— ìˆëŠ” ì‚¬ëŒê³¼ ì±„íŒ… (ì±„ë„ì€ ë°©ë²ˆí˜¸ê°€ -1)
 	{
 		for(int i=0;i<clientlist.size();i++)
 		{
@@ -56,7 +56,7 @@ public class ClientController
 		}
 	}
 
-	public void sendToOne(String id, String msg)		// ÇØ´ç ¾ÆÀÌµğ¸¦ °¡Áø »ç¶÷¿¡°Ô ¸Ş½ÃÁö¸¦ º¸³¿
+	public void sendToOne(String id, String msg)		// í•´ë‹¹ ì•„ì´ë””ë¥¼ ê°€ì§„ ì‚¬ëŒì—ê²Œ ë©”ì‹œì§€ë¥¼ ë³´ëƒ„
 	{
 		for(int i=0;i<clientlist.size();i++)
 		{
@@ -67,13 +67,13 @@ public class ClientController
 		}
 	}
 	
-	public void updateIDlist()				//Á¢¼ÓÀÚ ¸í´ÜÀ» ¸ğµç client¿¡°Ô º¸³¿
+	public void updateIDlist()				//ì ‘ì†ì ëª…ë‹¨ì„ ëª¨ë“  clientì—ê²Œ ë³´ëƒ„
 	{
-		String msg = "[Clientlist] Á¢¼ÓÀÚ ¼ö : " + clientlist.size()+"\n\n";
+		String msg = "[Clientlist] ì ‘ì†ì ìˆ˜ : " + clientlist.size()+"\n\n";
 
 		for(int i=0;i<clientlist.size();i++)
 		{
-			msg+=clientlist.get(i).getGameId()+"\n";		//¸ğµç Á¢¼ÓÀÚ ¸í´Ü
+			msg+=clientlist.get(i).getId()+"\n";		//ëª¨ë“  ì ‘ì†ì ëª…ë‹¨
 		}
 		sendToAll(msg);
 	}
