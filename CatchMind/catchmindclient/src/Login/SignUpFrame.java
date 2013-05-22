@@ -124,7 +124,6 @@ public class SignUpFrame extends JFrame implements ActionListener{
 			
 				}
 			}
-			
 		}
 		// 회원가입 버튼을 눌렀을 때
 		else if(event == SignUp)

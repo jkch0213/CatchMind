@@ -126,11 +126,11 @@ class Client extends Thread
 					id = msg.substring(15); 
 					ReValue = Login.IDCheck(id);
 					
-					if(ReValue.equals("true")){
-						msg = "[LoginIDCheck]true";
+					if(ReValue.equals("false")){
+						msg = "[LoginIDCheck]false";
 						sendToMe(msg);
 					}else{
-						msg = "[LoginIDCheck]false";
+						msg = "[LoginIDCheck]true";
 						sendToMe(msg);
 					}
 				}

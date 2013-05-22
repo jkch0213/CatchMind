@@ -97,6 +97,7 @@ public class Login {
 	    	while(rs.next()){
 	    		ID = rs.getString("user_id");
 	    	}
+	    	if(id.equals(ID))		return "false";
 	    	
 	    } catch (SQLException e) {
 	        System.out.println("SQLException: " + e.getMessage());
@@ -107,9 +108,7 @@ public class Login {
 	       	if(conn != null) try {conn.close();}catch(SQLException e){}
 	    }
 	    //아이디 두개가 같으면 중복된 아이디가 있으므로 false를 반환하여 중복된 값이 있다는 것을 알려줌
-		if(ID.equals(id))	return null;
-		else				return "true";
-	
+		return "true";
 	}
 
 	/* 비밀번호 찾기 */
